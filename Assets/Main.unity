@@ -270,8 +270,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dc4ac14013f629499bb30b3aaa710f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlatforms: 20
-  platform: {fileID: 1996024175530792, guid: 664ddc826c5b7574f88d60da12fcf958, type: 2}
+  platformPrefab: {fileID: 1996024175530792, guid: 664ddc826c5b7574f88d60da12fcf958,
+    type: 2}
+  poolSize: 5
   horizontalMin: 6.5
   horizontalMax: 14
   verticalMin: -6

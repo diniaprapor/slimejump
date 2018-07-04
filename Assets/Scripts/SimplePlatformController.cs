@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/* todo:
+ * add infinite level generation
+ * add score count and display
+ * add mobile controls
+ * make mobile build
+ * make goo character
+*/
+
 public class SimplePlatformController : MonoBehaviour {
     [HideInInspector] public bool facingRight = true;
     [HideInInspector] public bool jump = false;
@@ -21,6 +29,7 @@ public class SimplePlatformController : MonoBehaviour {
     {
         jump = false;
     }
+
     void Awake () {
         anim = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
