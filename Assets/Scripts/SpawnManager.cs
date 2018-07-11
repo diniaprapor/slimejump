@@ -12,6 +12,8 @@ public class SpawnManager : MonoBehaviour
     public float verticalMin = -6f;
     public float verticalMax = 6f;
 
+    public GameObject character;
+
     private Vector2 originPosition;
 
     private GameObject[] platforms;
@@ -55,6 +57,16 @@ public class SpawnManager : MonoBehaviour
     private void Update()
     {
         //check when there is a need for new platform and reuse oldest one
+        //int nextPlatform = (currentPlatform + 1) % poolSize;
+        float hDist = character.transform.position.x - platforms[currentPlatform].transform.position.x;
+        float vDist = character.transform.position.y - platforms[currentPlatform].transform.position.y;
+        bool canReuse = hDist > horizontalMax * 2.0f || vDist > verticalMax * 2.0f;
+        if (canReuse)
+        {
+            Debug.Log("reuse platform " + currentPlatform);
+            platforms[currentPlatform].GetComponent<Platform>().Reset();
+            SpawnOne();
+        }
         //reset kinematics, rotation and coins
     }
 }

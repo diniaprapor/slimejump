@@ -27,4 +27,9 @@ public class PlatformFall : MonoBehaviour {
     {
         rb2d.isKinematic = false;
     }
+
+    public void Reset()
+    {
+        rb2d.isKinematic = true;
+    }
 }

@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class SpawnCoins : MonoBehaviour {
     public Transform[] coinSpawns;
-    public GameObject coin;
+    public GameObject coinPrefab;
+    private GameObject[] coins;
 
 	// Use this for initialization
 	void Start () {
+        coins = new GameObject[coinSpawns.Length];
+        for (int i = 0; i < coinSpawns.Length; i++)
+        {
+            coins[i] = (GameObject)Instantiate(coinPrefab, coinSpawns[i].transform.position, Quaternion.identity);
+            coins[i].SetActive(false);
+        }
         Spawn();
 	}
 	
@@ -17,8 +24,22 @@ public class SpawnCoins : MonoBehaviour {
         {
             int coinFlip = Random.Range(0, 2);
             if (coinFlip > 0)
-                Instantiate(coin, coinSpawns[i].position, Quaternion.identity);
+                coins[i].SetActive(true);
+            //coins.Add(Instantiate(coinPrefab, coinSpawns[i].position, Quaternion.identity));
         }
+    }
 
+    void ClearCoins()
+    {
+        foreach (GameObject coin in coins)
+        {
+            coin.SetActive(false);
+        }
+    }
+
+    public void Reset()
+    {
+        ClearCoins();
+        Spawn();
     }
 }
