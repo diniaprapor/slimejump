@@ -31,5 +31,7 @@ public class PlatformFall : MonoBehaviour {
     public void Reset()
     {
         rb2d.isKinematic = true;
+        rb2d.angularVelocity = 0f;
+        rb2d.velocity = Vector2.zero;
     }
 }

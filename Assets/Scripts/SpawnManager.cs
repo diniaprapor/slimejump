@@ -24,7 +24,7 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         originPosition = transform.position;
-        //Initialize the columns collection.
+        //Initialize the platforms collection.
         platforms = new GameObject[poolSize];
         for (int i = 0; i < poolSize; i++)
         {
@@ -38,8 +38,7 @@ public class SpawnManager : MonoBehaviour
     {
         Vector2 randomPosition = originPosition + new Vector2(Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax));
         platforms[currentPlatform].transform.position = randomPosition;
-        //also reset platform and its coins
-
+        Debug.Log("platform position: " + platforms[currentPlatform].transform.position);
         originPosition = randomPosition;
         currentPlatform++;
         if (currentPlatform >= poolSize)
