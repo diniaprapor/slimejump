@@ -22,6 +22,7 @@ public class SpawnCoins : MonoBehaviour {
     {
         for(int i=0; i<coinSpawns.Length; i++)
         {
+            coins[i].transform.position = coinSpawns[i].transform.position;
             int coinFlip = Random.Range(0, 2);
             if (coinFlip > 0)
                 coins[i].SetActive(true);

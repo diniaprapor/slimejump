@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
  * add score count and display
  * add mobile controls
  * make mobile build
+ * make character not to be stuck at platform edges
  * make goo character
 */
 

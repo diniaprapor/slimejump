@@ -277,6 +277,8 @@ MonoBehaviour:
   horizontalMax: 14
   verticalMin: -6
   verticalMax: 6
+  horizontalRespawnMult: 2
+  verticalRespawnMult: 3
   character: {fileID: 1626079749}
 --- !u!1 &213014010
 GameObject:

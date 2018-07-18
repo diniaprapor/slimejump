@@ -258,4 +258,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9974a4ceb3cb7ec40b6dc73f239d9dee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallDelay: 5
+  fallDelay: 3
