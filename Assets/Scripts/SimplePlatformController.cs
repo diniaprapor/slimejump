@@ -4,12 +4,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /* todo:
- * add infinite level generation
+ * add infinite level generation - kind of done
  * add score count and display
  * add mobile controls
- * make mobile build
+ * make pause at start/restart
+ * some sort of main menu
  * make character not to be stuck at platform edges
  * make goo character
+ * slow fall ability?
+ * jump strength?
+ * double jump?
 */
 
 public class SimplePlatformController : MonoBehaviour {
@@ -46,7 +50,18 @@ public class SimplePlatformController : MonoBehaviour {
 
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 
-        if(Input.GetButtonDown("Jump") && grounded)
+        bool jumpInput = false;
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
+        jumpInput = Input.GetButtonDown("Jump");
+#elif UNITY_IOS || UNITY_ANDROID
+        if (Input.touchCount > 0){
+            Touch myTouch = Input.touches[0];
+            if (myTouch.phase == TouchPhase.Began)
+                jumpInput = true;
+        }
+#endif
+
+        if (jumpInput && grounded)
         {
             jump = true;
         }
@@ -54,7 +69,13 @@ public class SimplePlatformController : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        float h = Input.GetAxis("Horizontal");
+        float h = 0f;
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
+        h = Input.GetAxis("Horizontal");
+        //h = 1.0f;
+#elif UNITY_IOS || UNITY_ANDROID
+        h = 1.0f;
+#endif
         anim.SetFloat("Speed", Mathf.Abs(h));
 
         if(h * rb2d.velocity.x < maxSpeed)
@@ -75,7 +96,6 @@ public class SimplePlatformController : MonoBehaviour {
             jump = false;
             //Debug.Log("jump");
         }
-
     }
 
     void Flip()
