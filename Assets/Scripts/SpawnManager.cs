@@ -7,9 +7,9 @@ public class SpawnManager : MonoBehaviour
     //public int maxPlatforms = 20;
     public GameObject platformPrefab;
     public int poolSize = 5;
-    public float horizontalMin = 6.5f;
+    public float horizontalMin = 11f;
     public float horizontalMax = 14f;
-    public float verticalMin = -6f;
+    public float verticalMin = 1f;
     public float verticalMax = 6f;
     public float horizontalRespawnMult = 2f;
     public float verticalRespawnMult = 3f;
@@ -34,11 +34,15 @@ public class SpawnManager : MonoBehaviour
         }
 
         SpawnAll();
+
+        //Debug.Log("Platform H " + platformPrefab.transform.localScale.y);
+        //Debug.Log("Platform W " + platformPrefab.transform.localScale.x);
     }
 
     void SpawnOne()
     {
-        Vector2 randomPosition = originPosition + new Vector2(Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax));
+        float above = Random.value > 0.5f ? 1f: -1f;
+        Vector2 randomPosition = originPosition + new Vector2(Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax) * above);
         platforms[currentPlatform].transform.position = randomPosition;
         Debug.Log("platform position: " + platforms[currentPlatform].transform.position);
         originPosition = randomPosition;
@@ -60,8 +64,8 @@ public class SpawnManager : MonoBehaviour
         //check when there is a need for new platform and reuse oldest one
         //int nextPlatform = (currentPlatform + 1) % poolSize;
         float hDist = character.transform.position.x - platforms[currentPlatform].transform.position.x;
-        float vDist = character.transform.position.y - platforms[currentPlatform].transform.position.y;
-        bool canReuse = hDist > horizontalMax * horizontalRespawnMult || vDist > verticalMax * verticalRespawnMult;
+        //float vDist = character.transform.position.y - platforms[currentPlatform].transform.position.y;
+        bool canReuse = hDist > horizontalMax * horizontalRespawnMult;// || vDist > verticalMax * verticalRespawnMult;
         if (canReuse)
         {
             Debug.Log("reuse platform " + currentPlatform);

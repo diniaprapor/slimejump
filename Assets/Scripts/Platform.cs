@@ -32,4 +32,9 @@ public class Platform : MonoBehaviour {
         return myRenderer.isVisible;
     }
     */
+    void SetSize(int size)
+    {
+        //1 size unit, ~1/3 original platform size, fits one coin
+        //update coin positioning automatically
+    }
 }

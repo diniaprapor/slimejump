@@ -2,18 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /* todo:
- * add infinite level generation - kind of done
- * add score count and display
- * add mobile controls
+ * + add infinite level generation
+ * + add score count and display
+ * + add mobile controls
+ * + not go forward until first touch
+ * + resolution independent UI text
+ * + make platforms less overlaping
+ * add 2 types of collectibles
  * make pause at start/restart
+ * remove initial platform prefab, make everything generated
+ * make variable size platforms
  * some sort of main menu
  * make character not to be stuck at platform edges
  * make goo character
  * slow fall ability?
  * jump strength?
  * double jump?
+ * add some basic music and sound
+ * + start from higher position
+ * add basic effects on coin collect
+ * close app on back button
+ * autorotate view
 */
 
 public class SimplePlatformController : MonoBehaviour {
@@ -24,22 +36,31 @@ public class SimplePlatformController : MonoBehaviour {
     public float maxSpeed = 5f;
     public float jumpForce = 1000f;
     public Transform groundCheck;
+    public Text scoreText;
+    public int scoreIncrement = 1;
 
     private bool grounded = false;
     private Animator anim;
     private Rigidbody2D rb2d;
+    private int score;
+    private bool autorun = false;
+
+    //called before start
+    void Awake()
+    {
+        anim = GetComponent<Animator>();
+        rb2d = GetComponent<Rigidbody2D>();
+    }
 
     // Use this for initialization
     private void Start()
     {
         jump = false;
+        score = 0;
+        SetScoreText();
+        autorun = false;
     }
 
-    void Awake () {
-        anim = GetComponent<Animator>();
-        rb2d = GetComponent<Rigidbody2D>();
-	}
-	
 	// Update is called once per frame
 	void Update () {
         //check death
@@ -49,6 +70,9 @@ public class SimplePlatformController : MonoBehaviour {
         }
 
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+        //start running on first platform collision
+        //because otherwise character starts moving in the air and nearly misses first platform
+        if (grounded) autorun = true;
 
         bool jumpInput = false;
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
@@ -65,16 +89,16 @@ public class SimplePlatformController : MonoBehaviour {
         {
             jump = true;
         }
-	}
+    }
 
     private void FixedUpdate()
     {
         float h = 0f;
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
-        h = Input.GetAxis("Horizontal");
-        //h = 1.0f;
+        //h = Input.GetAxis("Horizontal");
+        if(autorun) h = 1.0f;
 #elif UNITY_IOS || UNITY_ANDROID
-        h = 1.0f;
+        if(autorun) h = 1.0f;
 #endif
         anim.SetFloat("Speed", Mathf.Abs(h));
 
@@ -104,5 +128,22 @@ public class SimplePlatformController : MonoBehaviour {
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    void SetScoreText()
+    {
+        scoreText.text = score.ToString();
+    }
+
+    bool IsMovingUp()
+    {
+        return rb2d.velocity.y > 0.01;
+    }
+
+    public void AddCoinScore()
+    {
+        score += scoreIncrement;
+        SetScoreText();
+        //Debug.Log("score: " + score);
     }
 }

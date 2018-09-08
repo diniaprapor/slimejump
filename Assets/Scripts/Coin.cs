@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Coin : MonoBehaviour {
-
+    private SimplePlatformController spc; 
 	// Use this for initialization
 	void Start () {
-		
+        GameObject player = GameObject.Find("hero");
+        spc = player.GetComponent<SimplePlatformController>();
 	}
 	
 	// Update is called once per frame
@@ -20,6 +21,8 @@ public class Coin : MonoBehaviour {
         {
             //Destroy(gameObject);
             gameObject.SetActive(false);
+            if(spc)
+                spc.AddCoinScore();
         }
     }
 }
