@@ -7,11 +7,15 @@ public class Platform : MonoBehaviour {
     PlatformFall pf;
     SpawnCoins sc;
 
+    //called before start
+    void Awake()
+    {
+        pf = GetComponent<PlatformFall>();
+        sc = GetComponent<SpawnCoins>();
+    }
     // Use this for initialization
     void Start () {
         //myRenderer = GetComponent<Renderer>();
-        pf = GetComponent<PlatformFall>();
-        sc = GetComponent<SpawnCoins>();
     }
 	
 	// Update is called once per frame
@@ -32,9 +36,5 @@ public class Platform : MonoBehaviour {
         return myRenderer.isVisible;
     }
     */
-    void SetSize(int size)
-    {
-        //1 size unit, ~1/3 original platform size, fits one coin
-        //update coin positioning automatically
-    }
+
 }

@@ -19,7 +19,7 @@ public class FollowCamera : MonoBehaviour {
 	void Update () {
         Vector3 pos = transform.position;
         pos.x = objectToFollow.position.x + offset.x;
-        pos.y = Mathf.SmoothDamp(pos.y, objectToFollow.position.y, ref followY, 0.2f) + offset.y;
+        pos.y = Mathf.SmoothDamp(pos.y, objectToFollow.position.y + offset.y, ref followY, 0.2f);
         transform.position = pos;
     }
 }

@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Coin : MonoBehaviour {
-    private SimplePlatformController spc; 
-	// Use this for initialization
+    public int value = 1;
+
+    private SimplePlatformController spc;
+    private bool valueAdded;
+	
+    // Use this for initialization
 	void Start () {
+        //might be expensive operation, since coins are spawning all time
+        //consider setting it externally in some way
         GameObject player = GameObject.Find("hero");
         spc = player.GetComponent<SimplePlatformController>();
-	}
+        valueAdded = false;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -21,8 +29,12 @@ public class Coin : MonoBehaviour {
         {
             //Destroy(gameObject);
             gameObject.SetActive(false);
-            if(spc)
-                spc.AddCoinScore();
+            if (spc && !valueAdded)
+            {
+                spc.AddCoinScore(value);
+                valueAdded = true;
+            }
+            //Debug.Log("add coin score");
         }
     }
 }

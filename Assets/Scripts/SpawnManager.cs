@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    //public int maxPlatforms = 20;
-    public GameObject platformPrefab;
-    public int poolSize = 5;
-    public float horizontalMin = 11f;
-    public float horizontalMax = 14f;
+    public GameObject [] platformPrefabs;
+    public int poolSize = 10;
+    public float horizontalGapMin = 1f;
+    public float horizontalGapMax = 4f;
     public float verticalMin = 1f;
     public float verticalMax = 6f;
-    public float horizontalRespawnMult = 2f;
-    public float verticalRespawnMult = 3f;
+    public float horizontalRespawnDist = 28f;
 
     public GameObject character;
 
@@ -20,35 +18,52 @@ public class SpawnManager : MonoBehaviour
 
     private GameObject[] platforms;
     private int currentPlatform = 0;
-
+    private float lowerLimit;
+    private float previousPlatformSize;
 
     // Use this for initialization
     void Start()
     {
+        SetLowerLimit();
+        previousPlatformSize = -1.0f;
+
         originPosition = transform.position;
         //Initialize the platforms collection.
         platforms = new GameObject[poolSize];
-        for (int i = 0; i < poolSize; i++)
-        {
-            platforms[i] = (GameObject)Instantiate(platformPrefab, originPosition, Quaternion.identity);
-        }
 
         SpawnAll();
+    }
 
-        //Debug.Log("Platform H " + platformPrefab.transform.localScale.y);
-        //Debug.Log("Platform W " + platformPrefab.transform.localScale.x);
+    private bool FirstPlatformSpawn()
+    {
+        return previousPlatformSize <= 0;
     }
 
     void SpawnOne()
     {
-        float above = Random.value > 0.5f ? 1f: -1f;
-        Vector2 randomPosition = originPosition + new Vector2(Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax) * above);
-        platforms[currentPlatform].transform.position = randomPosition;
-        Debug.Log("platform position: " + platforms[currentPlatform].transform.position);
-        originPosition = randomPosition;
-        currentPlatform++;
-        if (currentPlatform >= poolSize)
-            currentPlatform = 0;
+        //not most efficient way, but i'll switch to pools if it starts lagging at this point
+        if (platforms[currentPlatform] != null) Destroy(platforms[currentPlatform]);
+        int prefabId = FirstPlatformSpawn() ? (platformPrefabs.Length - 1) : Random.Range(0, platformPrefabs.Length); //always make first platform longest
+        platforms[currentPlatform] = (GameObject)Instantiate(platformPrefabs[prefabId], Vector2.zero, Quaternion.identity);
+
+        float currentPlatformSize = PlatformSize(platforms[currentPlatform].transform);
+        //update origin position
+        if (!FirstPlatformSpawn()) //dont update origin position for first platform
+        {
+            bool closeToBottom = originPosition.y - verticalMax - 1f < lowerLimit; //added 1 just to be safe.
+            float above = Random.value > 0.5f || closeToBottom ? 1f : -1f; //go only up if went too low
+            float horizontalMin = previousPlatformSize * 0.5f + currentPlatformSize * 0.5f + horizontalGapMin;
+            float horizontalMax = previousPlatformSize * 0.5f + currentPlatformSize * 0.5f + horizontalGapMax;
+
+            originPosition = originPosition + new Vector2(Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax) * above);
+
+            Debug.Log("Origin position: " + originPosition.ToString());
+        }
+        previousPlatformSize = currentPlatformSize;
+
+        platforms[currentPlatform].transform.position = originPosition;
+
+        currentPlatform = (currentPlatform + 1) % poolSize;
     }
 
     void SpawnAll()
@@ -62,18 +77,31 @@ public class SpawnManager : MonoBehaviour
     private void Update()
     {
         //check when there is a need for new platform and reuse oldest one
-        //int nextPlatform = (currentPlatform + 1) % poolSize;
         float hDist = character.transform.position.x - platforms[currentPlatform].transform.position.x;
         //float vDist = character.transform.position.y - platforms[currentPlatform].transform.position.y;
-        bool canReuse = hDist > horizontalMax * horizontalRespawnMult;// || vDist > verticalMax * verticalRespawnMult;
+        bool canReuse = hDist > horizontalRespawnDist;// || vDist > verticalMax * verticalRespawnMult;
         if (canReuse)
         {
             Debug.Log("reuse platform " + currentPlatform);
-            GameObject savedPlatform = platforms[currentPlatform];
             SpawnOne();
-            //needs to be after spawn for correct use of position
-            savedPlatform.GetComponent<Platform>().Reset();
         }
         //reset kinematics, rotation and coins
+    }
+
+    //Not sure if its best way to do it, maybe better setup some global variable class
+    private void SetLowerLimit()
+    {
+        lowerLimit = 0.0f;
+        GameObject hero = GameObject.Find("hero");
+        if (hero)
+        {
+            SimplePlatformController spc = hero.GetComponent<SimplePlatformController>();
+            lowerLimit = spc.deathLimit;
+            Debug.Log("Lower limit set: " + lowerLimit.ToString());
+        }
+    }
+    private float PlatformSize(Transform platform)
+    {
+        return platform.localScale.x;
     }
 }

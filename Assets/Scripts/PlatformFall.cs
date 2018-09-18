@@ -25,7 +25,6 @@ public class PlatformFall : MonoBehaviour {
 
     void Fall()
     {
-        //rb2d.isKinematic = false;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
     }
 
@@ -34,7 +33,6 @@ public class PlatformFall : MonoBehaviour {
         CancelInvoke();
         rb2d.angularVelocity = 0f;
         rb2d.velocity = Vector2.zero;
-        //rb2d.isKinematic = true;
         rb2d.bodyType = RigidbodyType2D.Kinematic;
     }
 }

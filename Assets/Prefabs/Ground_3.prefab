@@ -71,8 +71,9 @@ GameObject:
   - component: {fileID: 114998783945363704}
   - component: {fileID: 114410394972408488}
   - component: {fileID: 114184604951671846}
+  - component: {fileID: 61346616402676206}
   m_Layer: 12
-  m_Name: Ground
+  m_Name: Ground_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -195,6 +196,31 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!61 &61346616402676206
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1996024175530792}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 1debb068374764196a01e1c69c1f413f, type: 2}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.5006079, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.011215687, y: 1}
+  m_EdgeRadius: 0
 --- !u!61 &61447026572076746
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -203,7 +229,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1996024175530792}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 5f9c37fb361d64b788498991d3de93d7, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -247,6 +273,7 @@ MonoBehaviour:
   - {fileID: 4427929899375776}
   - {fileID: 4662349672010786}
   coinPrefab: {fileID: 1780517401590598, guid: 6ffb5590b478773499bc89dc57c75693, type: 2}
+  gemPrefab: {fileID: 1780517401590598, guid: 1e57c51a9b1940d4bb3a14fb0b06b58c, type: 2}
 --- !u!114 &114998783945363704
 MonoBehaviour:
   m_ObjectHideFlags: 1
