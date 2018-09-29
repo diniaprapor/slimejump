@@ -20,12 +20,14 @@ public class SpawnManager : MonoBehaviour
     private int currentPlatform = 0;
     private float lowerLimit;
     private float previousPlatformSize;
+    private int previousPlatformId;
 
     // Use this for initialization
     void Start()
     {
         SetLowerLimit();
         previousPlatformSize = -1.0f;
+        previousPlatformId = 0;
 
         originPosition = transform.position;
         //Initialize the platforms collection.
@@ -43,7 +45,9 @@ public class SpawnManager : MonoBehaviour
     {
         //not most efficient way, but i'll switch to pools if it starts lagging at this point
         if (platforms[currentPlatform] != null) Destroy(platforms[currentPlatform]);
-        int prefabId = FirstPlatformSpawn() ? (platformPrefabs.Length - 1) : Random.Range(0, platformPrefabs.Length); //always make first platform longest
+        int prefabStartIndex = previousPlatformId == 0 ? 1 : 0; //should prevent from shortest platform appearing twice in a row
+        int prefabId = FirstPlatformSpawn() ? (platformPrefabs.Length - 1) : Random.Range(prefabStartIndex, platformPrefabs.Length); //always make first platform longest
+        previousPlatformId = prefabId;
         platforms[currentPlatform] = (GameObject)Instantiate(platformPrefabs[prefabId], Vector2.zero, Quaternion.identity);
 
         float currentPlatformSize = PlatformSize(platforms[currentPlatform].transform);
@@ -85,7 +89,6 @@ public class SpawnManager : MonoBehaviour
             Debug.Log("reuse platform " + currentPlatform);
             SpawnOne();
         }
-        //reset kinematics, rotation and coins
     }
 
     //Not sure if its best way to do it, maybe better setup some global variable class

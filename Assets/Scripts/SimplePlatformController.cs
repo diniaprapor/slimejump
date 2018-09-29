@@ -26,14 +26,21 @@ using UnityEngine.UI;
  * + increase platform pool
  * + fix coin positions on resized platforms
  * + make variable size platforms
- * make pause at start/restart
- * some sort of main menu
+ * + resolution independent score text
+ * + make pause at start/restart
+ * - some sort of main menu
+ * + fix platform end stuck bug
+ * localize text
+ * settings menu
  * make goo character
+ * make possible to switch characters
+ * limited restored over time lives and watch ad / in-app to skip that
  * slow fall ability?
  * jump strength?
  * double jump?
  * add some basic music and sound
  * add basic effects on coin collect
+ * hi score saving
 */
 
 public class SimplePlatformController : MonoBehaviour {
@@ -48,14 +55,20 @@ public class SimplePlatformController : MonoBehaviour {
     public float jumpForce = 1000f;
     public Transform groundCheck;
     public Text scoreText;
+    public Text gameOverText;
     public Text debugSpeed;
 
     private bool grounded = false;
     private Animator anim;
     private Rigidbody2D rb2d;
-    private int score;
     private bool autorun = false;
     private float currentSpeed;
+
+    private static bool firstRun = true;
+    private static int score = 0;
+
+    private delegate void UpdateDelegate();
+    private UpdateDelegate currentUpdate;
 
     //called before start
     void Awake()
@@ -68,17 +81,22 @@ public class SimplePlatformController : MonoBehaviour {
     private void Start()
     {
         jump = false;
-        score = 0;
         SetScoreText();
         autorun = false;
         currentSpeed = initSpeed;
 #if UNITY_EDITOR
         InvokeRepeating("PrintVelocityX", 1.0f, 0.1f);
 #endif
+        SetupPauseState();
     }
 
 	// Update is called once per frame
 	void Update () {
+        currentUpdate();
+    }
+
+    void GameUpdate()
+    {
         //check death
         if (transform.position.y < deathLimit)
         {
@@ -113,6 +131,47 @@ public class SimplePlatformController : MonoBehaviour {
         //exit app on back button
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
+    }
+
+    void PauseUpdate()
+    {
+        bool anykey = false;
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
+        anykey = Input.anyKeyDown;
+#elif UNITY_IOS || UNITY_ANDROID
+        if (Input.touchCount > 0){
+            Touch myTouch = Input.touches[0];
+            if (myTouch.phase == TouchPhase.Began)
+                anykey = true;
+        }
+#endif
+        if (anykey)
+        {
+            gameOverText.gameObject.SetActive(false);
+            currentUpdate = GameUpdate;
+            Time.timeScale = 1;
+            score = 0; //setting score here, so that it can be observed after death
+            SetScoreText();
+        }
+    }
+
+    void SetupPauseState()
+    {
+        currentUpdate = PauseUpdate;
+        Time.timeScale = 0;
+        gameOverText.gameObject.SetActive(true);
+        Text restartText = gameOverText.transform.Find("TapToRestart").gameObject.GetComponent<Text>();
+        if (firstRun)
+        {
+            firstRun = false;
+            gameOverText.text = "Go!";
+            restartText.text = "Tap to start";
+        }
+        else
+        {
+            gameOverText.text = "Game Over";
+            restartText.text = "Tap to restart";
+        }
     }
 
     private void FixedUpdate()
@@ -157,7 +216,7 @@ public class SimplePlatformController : MonoBehaviour {
         scoreText.text = score.ToString();
     }
 
-    bool IsMovingUp()
+    public bool IsMovingUp()
     {
         return rb2d.velocity.y > 0.01;
     }
