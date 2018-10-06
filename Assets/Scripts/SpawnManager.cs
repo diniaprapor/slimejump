@@ -105,6 +105,7 @@ public class SpawnManager : MonoBehaviour
     }
     private float PlatformSize(Transform platform)
     {
-        return platform.localScale.x;
+        Platform p = platform.GetComponent<Platform>();
+        return p.SizeX();
     }
 }

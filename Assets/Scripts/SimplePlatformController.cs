@@ -30,16 +30,23 @@ using UnityEngine.UI;
  * + make pause at start/restart
  * - some sort of main menu
  * + fix platform end stuck bug
+ * + texture for platforms
+ * + background gradient
+ * clouds
+ * make platforms less bright
+ * achievement system
+ * slow fall ability?
+ * double jump?
+ * jump strength = hold duration
+ * add some basic music and sound
+ * add basic effects on coin collect
+ * coin and gem animation (up-down wobble)
  * localize text
  * settings menu
  * make goo character
  * make possible to switch characters
  * limited restored over time lives and watch ad / in-app to skip that
- * slow fall ability?
  * jump strength?
- * double jump?
- * add some basic music and sound
- * add basic effects on coin collect
  * hi score saving
 */
 
