@@ -32,8 +32,10 @@ using UnityEngine.UI;
  * + fix platform end stuck bug
  * + texture for platforms
  * + background gradient
- * clouds
- * make platforms less bright
+ * + clouds + cloud colors + positioning + shapes + parallax
+ * + make platforms less bright
+ * + make platforms right texture size
+ * destroy not taken coins and gems
  * achievement system
  * slow fall ability?
  * double jump?
@@ -138,6 +140,8 @@ public class SimplePlatformController : MonoBehaviour {
         //exit app on back button
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
+
+        //transform.position = new Vector3(0.0f, 10.5f, 0.0f);
     }
 
     void PauseUpdate()

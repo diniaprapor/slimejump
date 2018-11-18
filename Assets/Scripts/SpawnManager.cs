@@ -61,7 +61,7 @@ public class SpawnManager : MonoBehaviour
 
             originPosition = originPosition + new Vector2(Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax) * above);
 
-            Debug.Log("Origin position: " + originPosition.ToString());
+            //Debug.Log("Origin position: " + originPosition.ToString());
         }
         previousPlatformSize = currentPlatformSize;
 
@@ -86,7 +86,7 @@ public class SpawnManager : MonoBehaviour
         bool canReuse = hDist > horizontalRespawnDist;// || vDist > verticalMax * verticalRespawnMult;
         if (canReuse)
         {
-            Debug.Log("reuse platform " + currentPlatform);
+            //Debug.Log("reuse platform " + currentPlatform);
             SpawnOne();
         }
     }
