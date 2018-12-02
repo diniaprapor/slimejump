@@ -35,21 +35,21 @@ using UnityEngine.UI;
  * + clouds + cloud colors + positioning + shapes + parallax
  * + make platforms less bright
  * + make platforms right texture size
- * destroy not taken coins and gems
+ * + destroy not taken coins and gems
+ * settings menu
  * achievement system
+ * hi score saving
+ * make platform collision a bit wider than visual part
  * slow fall ability?
  * double jump?
- * jump strength = hold duration
+ * jump strength = hold duration?
  * add some basic music and sound
  * add basic effects on coin collect
  * coin and gem animation (up-down wobble)
  * localize text
- * settings menu
  * make goo character
  * make possible to switch characters
  * limited restored over time lives and watch ad / in-app to skip that
- * jump strength?
- * hi score saving
 */
 
 public class SimplePlatformController : MonoBehaviour {
@@ -67,6 +67,7 @@ public class SimplePlatformController : MonoBehaviour {
     public Text gameOverText;
     public Text debugSpeed;
 
+    private PlayerProgress playerProgress;
     private bool grounded = false;
     private Animator anim;
     private Rigidbody2D rb2d;
@@ -96,6 +97,7 @@ public class SimplePlatformController : MonoBehaviour {
 #if UNITY_EDITOR
         InvokeRepeating("PrintVelocityX", 1.0f, 0.1f);
 #endif
+        playerProgress = GetComponent<PlayerProgress>();
         SetupPauseState();
     }
 
@@ -172,6 +174,8 @@ public class SimplePlatformController : MonoBehaviour {
         Time.timeScale = 0;
         gameOverText.gameObject.SetActive(true);
         Text restartText = gameOverText.transform.Find("TapToRestart").gameObject.GetComponent<Text>();
+        Text scoreValText = gameOverText.transform.Find("GOScoreVal").gameObject.GetComponent<Text>();
+        Text hiScoreValText = gameOverText.transform.Find("GOHiScoreVal").gameObject.GetComponent<Text>();
         if (firstRun)
         {
             firstRun = false;
@@ -183,6 +187,8 @@ public class SimplePlatformController : MonoBehaviour {
             gameOverText.text = "Game Over";
             restartText.text = "Tap to restart";
         }
+        scoreValText.text = score.ToString();
+        hiScoreValText.text = playerProgress.GetHiScore().ToString();
     }
 
     private void FixedUpdate()
@@ -241,6 +247,7 @@ public class SimplePlatformController : MonoBehaviour {
     {
         score += value;
         SetScoreText();
+        playerProgress.SetHiScore(score);
         //Debug.Log("score: " + score);
     }
 }

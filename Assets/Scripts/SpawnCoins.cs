@@ -31,6 +31,8 @@ public class SpawnCoins : MonoBehaviour {
             {
                 GameObject obj = spawnGem ? gemPrefab : coinPrefab;
                 coins[i] = (GameObject)Instantiate(obj, coinSpawns[i].transform.position, Quaternion.identity);
+                //needed for proper destruction
+                coins[i].transform.SetParent(transform, true);
             }
             /*
             coins[i].transform.position = coinSpawns[i].transform.position;

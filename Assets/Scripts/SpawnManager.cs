@@ -44,7 +44,13 @@ public class SpawnManager : MonoBehaviour
     void SpawnOne()
     {
         //not most efficient way, but i'll switch to pools if it starts lagging at this point
-        if (platforms[currentPlatform] != null) Destroy(platforms[currentPlatform]);
+        if (platforms[currentPlatform] != null)
+        {
+            //reset not strictly necessary since we are not using pool
+            //but it will be needed if switched to pool and also does platform children cleanup
+            //platforms[currentPlatform].GetComponent<Platform>().Reset(); 
+            Destroy(platforms[currentPlatform]);
+        }
         int prefabStartIndex = previousPlatformId == 0 ? 1 : 0; //should prevent from shortest platform appearing twice in a row
         int prefabId = FirstPlatformSpawn() ? (platformPrefabs.Length - 1) : Random.Range(prefabStartIndex, platformPrefabs.Length); //always make first platform longest
         previousPlatformId = prefabId;
@@ -103,6 +109,7 @@ public class SpawnManager : MonoBehaviour
             Debug.Log("Lower limit set: " + lowerLimit.ToString());
         }
     }
+
     private float PlatformSize(Transform platform)
     {
         Platform p = platform.GetComponent<Platform>();
