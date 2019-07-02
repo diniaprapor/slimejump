@@ -15,14 +15,17 @@ public class FollowCamera : MonoBehaviour {
     private float followY;
     //private Vector3 followPosition;
     private float followVerticalSize;
-    private SimplePlatformController spc; //to get hero movement. Could calculate it locally from transform, but oh well. 
+    private Vector3 prevPos;
+    //private SimplePlatformController spc; //to get hero movement. Could calculate it locally from transform, but oh well. 
     private Camera cam; //camera which has script attached
+    
     // Use this for initialization
     void Start () {
         followY = 0f;// objectToFollow.position.y;
-        spc = objectToFollow.GetComponent<SimplePlatformController>();
+        //spc = objectToFollow.GetComponent<SimplePlatformController>();
         cam = GetComponent<Camera>();
         followVerticalSize = 0f;
+        prevPos = objectToFollow.position;
     }
 	
 	// Update is called once per frame
@@ -33,7 +36,14 @@ public class FollowCamera : MonoBehaviour {
         transform.position = pos;
 
         //zoom out on jump
-        float camSizeTarget = spc.IsMovingUp() ? maxVerticalSize : minVerticalSize;
+        float camSizeTarget = IsTargetMovingUp() ? maxVerticalSize : minVerticalSize;
         cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, camSizeTarget, ref followVerticalSize, sizeAdjustTime);
+
+        prevPos = objectToFollow.position;
+    }
+
+    private bool IsTargetMovingUp()
+    {
+        return prevPos.y < objectToFollow.position.y;
     }
 }

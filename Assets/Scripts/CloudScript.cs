@@ -40,7 +40,7 @@ public class CloudScript : MonoBehaviour
 
         sr = GetComponent<SpriteRenderer>();
         sr.color = GetPastelShade();
-        Debug.Log("Cloud start " + transform.position.ToString());
+        //Debug.Log("Cloud start " + transform.position.ToString());
     }
 
     // Update is called once per frame

@@ -12,24 +12,23 @@ public class SpawnManager : MonoBehaviour
     public float verticalMax = 6f;
     public float horizontalRespawnDist = 28f;
 
-    public GameObject character;
-
+    private float lowerLimit;
+    private Transform characterTransform;
     private Vector2 originPosition;
 
     private GameObject[] platforms;
     private int currentPlatform = 0;
-    private float lowerLimit;
     private float previousPlatformSize;
     private int previousPlatformId;
 
     // Use this for initialization
     void Start()
     {
-        SetLowerLimit();
+        //SetLowerLimit();
         previousPlatformSize = -1.0f;
         previousPlatformId = 0;
 
-        originPosition = transform.position;
+        //originPosition = transform.position;
         //Initialize the platforms collection.
         platforms = new GameObject[poolSize];
 
@@ -87,7 +86,7 @@ public class SpawnManager : MonoBehaviour
     private void Update()
     {
         //check when there is a need for new platform and reuse oldest one
-        float hDist = character.transform.position.x - platforms[currentPlatform].transform.position.x;
+        float hDist = characterTransform.position.x - platforms[currentPlatform].transform.position.x;
         //float vDist = character.transform.position.y - platforms[currentPlatform].transform.position.y;
         bool canReuse = hDist > horizontalRespawnDist;// || vDist > verticalMax * verticalRespawnMult;
         if (canReuse)
@@ -97,22 +96,27 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
-    //Not sure if its best way to do it, maybe better setup some global variable class
-    private void SetLowerLimit()
-    {
-        lowerLimit = 0.0f;
-        GameObject hero = GameObject.Find("hero");
-        if (hero)
-        {
-            SimplePlatformController spc = hero.GetComponent<SimplePlatformController>();
-            lowerLimit = spc.deathLimit;
-            Debug.Log("Lower limit set: " + lowerLimit.ToString());
-        }
-    }
-
     private float PlatformSize(Transform platform)
     {
         Platform p = platform.GetComponent<Platform>();
         return p.SizeX();
+    }
+
+    public void SetLowerLimit(float ll)
+    {
+        lowerLimit = ll;
+        //Debug.Log("Lower limit set: " + lowerLimit.ToString());
+    }
+
+    public void SetCharacterTransform(Transform ct)
+    {
+        characterTransform = ct;
+        //Debug.Log("Character transform set");
+    }
+
+    public void SetOriginPosition(Vector2 op)
+    {
+        originPosition = op;
+        //Debug.Log("Origin position set: " + originPosition.ToString());
     }
 }

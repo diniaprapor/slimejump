@@ -8,7 +8,7 @@ public class PlayerProgress : MonoBehaviour {
     {
         //needs to load before Start()
         LoadData();
-        Debug.Log("player progress start");
+        //Debug.Log("player progress start");
     }
 
     // Use this for initialization
@@ -23,18 +23,18 @@ public class PlayerProgress : MonoBehaviour {
     void LoadData()
     {
         highestScore = PlayerPrefs.GetInt("highestScore", 0);
-        Debug.Log("Player progress load data: " + highestScore);
+        //Debug.Log("Player progress load data: " + highestScore);
     }
 
     public void SaveData()
     {
         PlayerPrefs.SetInt("highestScore", highestScore);
-        Debug.Log("Player progress save data: " + highestScore);
+        //Debug.Log("Player progress save data: " + highestScore);
     }
 
     public int GetHiScore()
     {
-        Debug.Log("Player progress get hi score: " + highestScore);
+        //Debug.Log("Player progress get hi score: " + highestScore);
         return highestScore;
     }
 

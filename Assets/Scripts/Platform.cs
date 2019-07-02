@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Platform : MonoBehaviour {
     //Renderer myRenderer;
-    PlatformFall pf;
-    SpawnCoins sc;
+    private PlatformFall pf;
+    private SpawnCoins sc;
 
     float sizeX;
 

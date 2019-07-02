@@ -11,13 +11,7 @@ public class SpawnCoins : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         coins = new GameObject[coinSpawns.Length];
-        /*
-        for (int i = 0; i < coinSpawns.Length; i++)
-        {
-            coins[i] = (GameObject)Instantiate(coinPrefab, coinSpawns[i].transform.position, Quaternion.identity);
-            coins[i].SetActive(false);
-        }
-        */
+
         Spawn();
 	}
 	
@@ -25,8 +19,8 @@ public class SpawnCoins : MonoBehaviour {
     {
         for(int i=0; i<coinSpawns.Length; i++)
         {
-            bool spawnAnything = Random.Range(0, 2) > 0;
-            bool spawnGem = Random.Range(0, 5) == 0; //20%
+            bool spawnAnything = Random.Range(0f, 1f) < GameController.collectableSpawnProbability;
+            bool spawnGem = Random.Range(0f, 1f) < GameController.gemSpawnProbability; 
             if (spawnAnything)
             {
                 GameObject obj = spawnGem ? gemPrefab : coinPrefab;
@@ -34,13 +28,6 @@ public class SpawnCoins : MonoBehaviour {
                 //needed for proper destruction
                 coins[i].transform.SetParent(transform, true);
             }
-            /*
-            coins[i].transform.position = coinSpawns[i].transform.position;
-            int coinFlip = Random.Range(0, 2);
-            if (coinFlip > 0)
-                coins[i].SetActive(true);
-                */
-            //coins.Add(Instantiate(coinPrefab, coinSpawns[i].position, Quaternion.identity));
         }
     }
 
@@ -48,7 +35,6 @@ public class SpawnCoins : MonoBehaviour {
     {
         foreach (GameObject coin in coins)
         {
-            //coin.SetActive(false);
             Destroy(coin);
         }
     }
