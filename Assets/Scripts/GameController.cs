@@ -42,6 +42,7 @@ using UnityEngine.Assertions;
  * + refactor SpawnCoins so that GameController sets its vars
  * + refactor CharacterController so that GameController sets its vars
  * fully replace old char with new and clean up resources
+ * screenshot
  * new char stuck at front edge
  * fix new char anims
  * hold for jump strength
@@ -71,6 +72,7 @@ public class GameController : MonoBehaviour
 
     public GameObject characterGO;
     public float deathLimit = -40f;
+    public float gameSpeed = 1.0f;
 
     public Text gameOverText;
 
@@ -82,6 +84,8 @@ public class GameController : MonoBehaviour
 
     private static bool firstRun = true;
     private Vector3 initialCharScale;
+
+    private GUIStyle debugUIStyle = new GUIStyle();
 
     //called before start
     void Awake()
@@ -139,7 +143,7 @@ public class GameController : MonoBehaviour
             SetCharacterVisible(true);
             gameOverText.gameObject.SetActive(false);
             currentUpdate = GameUpdate;
-            Time.timeScale = 1;
+            Time.timeScale = gameSpeed;
             score.Reset();
         }
     }
@@ -190,5 +194,16 @@ public class GameController : MonoBehaviour
         //sot sure if the best way, but looks better than using position of GameController object.
         Transform op = transform.Find("OriginPosition");
         sm.SetOriginPosition(op.position);
+    }
+
+    void OnGUI()
+    {
+        //debug stuff
+        debugUIStyle.fontSize = 30;
+
+        Animator charAnimator = characterGO.GetComponent<Animator>();
+        AnimatorClipInfo[] animatorClipInfo = charAnimator.GetCurrentAnimatorClipInfo(0);
+        AnimationClip currentClip = animatorClipInfo[0].clip;
+        GUI.Label(new Rect(10, 10, 300, 100), "CurrentAnimation: " + currentClip.name, debugUIStyle);
     }
 }
