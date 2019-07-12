@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class PlatformSpawnManager : MonoBehaviour
 {
     public GameObject [] platformPrefabs;
     public int poolSize = 10;

@@ -5,7 +5,6 @@ using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class PlatformCharacterController : MonoBehaviour {
-    //public GameController gameController; //kinda breaks incapsulation, but not sure how to handle that other way 
     public Text debugSpeed;
 
     public float moveForce = 365f;
@@ -84,6 +83,7 @@ public class PlatformCharacterController : MonoBehaviour {
         if(autorun && grounded) h = 1.0f; //accelerate only when on ground
 
         anim.SetFloat("Speed", Mathf.Abs(h));
+        anim.SetBool("Grounded", grounded);
 
         if(h * rb2d.velocity.x < currentSpeed)
             rb2d.AddForce(Vector2.right * h * moveForce);
