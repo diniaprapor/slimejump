@@ -41,27 +41,28 @@ using UnityEngine.Assertions;
  * + refactor SpawnManager so that GameController sets its vars
  * + refactor SpawnCoins so that GameController sets its vars
  * + refactor CharacterController so that GameController sets its vars
- * fully replace old char with new and clean up resources
- * screenshot
+ * + fully replace old char with new and clean up resources
+ * + screenshot
+ * hold for jump strength
+ * coin and gem animation (up-down wobble)
  * make straight infinite run mode for debugging
  * new char stuck at front edge
+ * make platform collision a bit wider than visual part
  * fix new char anims
  * switch to dragonbones animation
- * hold for jump strength
- * jump strength = hold duration?
+ * make possible to switch characters skins
  * show previous record distance
  * !make camera resolution independent
- * make possible to switch characters skins
  * settings menu
  * achievement system
- * hi score saving
- * make platform collision a bit wider than visual part
  * slow fall ability?
  * double jump?
+ * dash or jump + dash?
  * add some basic music and sound
  * add basic effects on coin collect
- * coin and gem animation (up-down wobble)
  * localize text
+ * skin choice
+ * online leaderboard
  * limited restored over time lives and watch ad / in-app to skip that
 */
 
@@ -117,6 +118,12 @@ public class GameController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
 
+#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.P)){
+            var nameScreenshot = "Screenshots\\Screenshot_" + System.DateTime.Now.ToString("dd-mm-yyyy-hh-mm-ss") + ".png";
+            ScreenCapture.CaptureScreenshot(nameScreenshot);
+        }
+#endif
     }
 
     void GameUpdate()
@@ -201,12 +208,15 @@ public class GameController : MonoBehaviour
     void OnGUI()
     {
         //debug stuff
-        debugUIStyle.fontSize = 30;
+        if (Debug.isDebugBuild)
+        {
+            debugUIStyle.fontSize = 30;
 
-        Animator charAnimator = characterGO.GetComponent<Animator>();
-        AnimatorClipInfo[] animatorClipInfo = charAnimator.GetCurrentAnimatorClipInfo(0);
-        AnimationClip currentClip = animatorClipInfo.Length > 0 ? animatorClipInfo[0].clip : null;
-        if(currentClip != null)
-            GUI.Label(new Rect(10, 10, 300, 100), "CurrentAnimation: " + currentClip.name, debugUIStyle);
+            Animator charAnimator = characterGO.GetComponent<Animator>();
+            AnimatorClipInfo[] animatorClipInfo = charAnimator.GetCurrentAnimatorClipInfo(0);
+            AnimationClip currentClip = animatorClipInfo.Length > 0 ? animatorClipInfo[0].clip : null;
+            if (currentClip != null)
+                GUI.Label(new Rect(10, 10, 300, 100), "CurrentAnimation: " + currentClip.name, debugUIStyle);
+        }
     }
 }
