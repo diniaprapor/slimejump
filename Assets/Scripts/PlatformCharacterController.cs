@@ -12,6 +12,7 @@ public class PlatformCharacterController : MonoBehaviour {
     public float maxSpeed = 5f;
     public float timeToMaxSpeed = 60; //seconds
     public float jumpForce = 1000f;
+    public float jumpForceWindow = 0.2f; //time from jump start to add jump force
 
     public delegate void AddScoreDelegate(Score.CollectableType ct);
     public AddScoreDelegate addScore;
@@ -23,7 +24,9 @@ public class PlatformCharacterController : MonoBehaviour {
     private float currentSpeed;
     private Transform groundCheck;
     private bool facingRight = true;
-    private bool jump = false;
+    //private bool jump = false;
+    bool jumpInput = false;
+    private float timeSinceJump = 0.0f;
 
     //called before start
     void Awake()
@@ -37,7 +40,9 @@ public class PlatformCharacterController : MonoBehaviour {
     // Use this for initialization
     private void Start()
     {
-        jump = false;
+        //jump = false;
+        jumpInput = false;
+        timeSinceJump = jumpForceWindow;
         autorun = false;
         currentSpeed = initSpeed;
 #if UNITY_EDITOR
@@ -57,20 +62,24 @@ public class PlatformCharacterController : MonoBehaviour {
         //debugSpeed.text = currentSpeed.ToString();
         //debugSpeed.text = rb2d.velocity.x.ToString("0f");
 
-        bool jumpInput = false;
+        //bool jumpInput = false;
+        jumpInput = false;
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
-        jumpInput = Input.GetButtonDown("Jump");
+        //jumpInput = Input.GetButtonDown("Jump");
+        jumpInput = Input.GetButton("Jump");
 #elif UNITY_IOS || UNITY_ANDROID
         if (Input.touchCount > 0){
             Touch myTouch = Input.touches[0];
-            if (myTouch.phase == TouchPhase.Began)
+            if (myTouch.phase == TouchPhase.Began || myTouch.phase == TouchPhase.Stationary)
                 jumpInput = true;
         }
 #endif
 
+        //jump start
         if (jumpInput && grounded)
         {
-            jump = true;
+            //jump = true;
+            timeSinceJump = 0.0f;
         }
 
         //transform.position = new Vector3(0.0f, 10.5f, 0.0f);
@@ -97,13 +106,15 @@ public class PlatformCharacterController : MonoBehaviour {
         else if (h < 0 && facingRight)
             Flip();
 
-        if (jump)
+        //if (jump)
+        if(timeSinceJump <= jumpForceWindow && jumpInput)
         {
-            anim.SetTrigger("Jump");
+            //anim.SetTrigger("Jump"); //not used right now, maybe remove later
             rb2d.AddForce(new Vector2(0f, jumpForce));
-            jump = false;
+            //jump = false;
             //Debug.Log("jump");
         }
+        timeSinceJump += Time.deltaTime;
     }
 
     void Flip()

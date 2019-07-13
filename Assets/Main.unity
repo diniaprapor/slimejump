@@ -374,6 +374,16 @@ PrefabInstance:
       propertyPath: debugSpeed
       value: 
       objectReference: {fileID: 796135126}
+    - target: {fileID: 6810640964005195331, guid: 73b6a11f7635bae41b3acd30b154eec9,
+        type: 3}
+      propertyPath: jumpForce
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810640964005195331, guid: 73b6a11f7635bae41b3acd30b154eec9,
+        type: 3}
+      propertyPath: jumpForceWindow
+      value: 0.15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 73b6a11f7635bae41b3acd30b154eec9, type: 3}
 --- !u!1 &583617921

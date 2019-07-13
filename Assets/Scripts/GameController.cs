@@ -95,7 +95,7 @@ public class GameController : MonoBehaviour
     {
         Assert.IsNotNull(characterGO, "Character GameObject not set!");
         initialCharScale = characterGO.transform.localScale;
-        SetupSpawnManager();
+        SetupPlatformSpawnManager();
     }
     // Start is called before the first frame update
     void Start()
@@ -120,7 +120,10 @@ public class GameController : MonoBehaviour
 
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.P)){
-            var nameScreenshot = "Screenshots\\Screenshot_" + System.DateTime.Now.ToString("dd-mm-yyyy-hh-mm-ss") + ".png";
+            string folder = "Screenshots\\";
+            if (!System.IO.Directory.Exists(folder))
+                System.IO.Directory.CreateDirectory(folder);
+            var nameScreenshot = folder + "Screenshot_" + System.DateTime.Now.ToString("dd-mm-yyyy-hh-mm-ss") + ".png";
             ScreenCapture.CaptureScreenshot(nameScreenshot);
         }
 #endif
@@ -193,7 +196,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void SetupSpawnManager()
+    private void SetupPlatformSpawnManager()
     {
         PlatformSpawnManager sm = GetComponent<PlatformSpawnManager>();
         Assert.IsNotNull(sm, "Spawn Manager component not found!");
