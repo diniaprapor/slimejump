@@ -1470,3 +1470,4 @@ MonoBehaviour:
   verticalMin: 1
   verticalMax: 6
   horizontalRespawnDist: 20
+  debugPlacePlatformsAdjacent: 0

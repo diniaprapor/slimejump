@@ -11,6 +11,7 @@ public class PlatformSpawnManager : MonoBehaviour
     public float verticalMin = 1f;
     public float verticalMax = 6f;
     public float horizontalRespawnDist = 28f;
+    public bool debugPlacePlatformsAdjacent = false;
 
     private float lowerLimit;
     private Transform characterTransform;
@@ -63,8 +64,15 @@ public class PlatformSpawnManager : MonoBehaviour
             float above = Random.value > 0.5f || closeToBottom ? 1f : -1f; //go only up if went too low
             float horizontalMin = previousPlatformSize * 0.5f + currentPlatformSize * 0.5f + horizontalGapMin;
             float horizontalMax = previousPlatformSize * 0.5f + currentPlatformSize * 0.5f + horizontalGapMax;
+            Vector2 offset = new Vector2(Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax) * above);
 
-            originPosition = originPosition + new Vector2(Random.Range(horizontalMin, horizontalMax), Random.Range(verticalMin, verticalMax) * above);
+            if(debugPlacePlatformsAdjacent && Debug.isDebugBuild)
+            {
+                offset.x = previousPlatformSize * 0.5f + currentPlatformSize * 0.5f;
+                offset.y = 0.0f;
+            }
+
+            originPosition = originPosition + offset;
 
             //Debug.Log("Origin position: " + originPosition.ToString());
         }
