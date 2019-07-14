@@ -44,12 +44,11 @@ using UnityEngine.Assertions;
  * + fully replace old char with new and clean up resources
  * + screenshot
  * + hold for jump strength
- * new char stuck at front edge
- * make platform collision a bit wider than visual part
- * coin and gem animation (up-down wobble)
+ * + new char stuck at front edge
+ * + make straight infinite run mode for debugging
+ * + fix new char anims
+ * + coin and gem animation (up-down wobble)
  * fix platform texture sizes
- * make straight infinite run mode for debugging
- * fix new char anims
  * switch to dragonbones animation
  * make possible to switch characters skins
  * show previous record distance
