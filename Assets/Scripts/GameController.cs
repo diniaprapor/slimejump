@@ -48,9 +48,11 @@ using UnityEngine.Assertions;
  * + make straight infinite run mode for debugging
  * + fix new char anims
  * + coin and gem animation (up-down wobble)
- * fix platform texture sizes
  * switch to dragonbones animation
  * make possible to switch characters skins
+ * pause button
+ * screenshot button
+ * fix platform texture sizes
  * show previous record distance
  * !make camera resolution independent
  * settings menu
