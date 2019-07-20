@@ -18,7 +18,7 @@ public class PlatformCharacterController : MonoBehaviour {
     public AddScoreDelegate addScore;
 
     private bool grounded = false;
-    private Animator anim;
+    //private Animator anim;
     private Rigidbody2D rb2d;
     private bool autorun = false;
     private float currentSpeed;
@@ -31,7 +31,7 @@ public class PlatformCharacterController : MonoBehaviour {
     //called before start
     void Awake()
     {
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         groundCheck = transform.Find("GroundCheck");
         Assert.IsNotNull(groundCheck, "GroundCheck not found!");
@@ -91,8 +91,8 @@ public class PlatformCharacterController : MonoBehaviour {
         //h = Input.GetAxis("Horizontal");
         if(autorun && grounded) h = 1.0f; //accelerate only when on ground
 
-        anim.SetFloat("Speed", Mathf.Abs(h));
-        anim.SetBool("Grounded", grounded);
+        //anim.SetFloat("Speed", Mathf.Abs(h));
+        //anim.SetBool("Grounded", grounded);
 
         if(h * rb2d.velocity.x < currentSpeed)
             rb2d.AddForce(Vector2.right * h * moveForce);

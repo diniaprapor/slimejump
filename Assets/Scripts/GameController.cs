@@ -216,12 +216,13 @@ public class GameController : MonoBehaviour
         if (Debug.isDebugBuild)
         {
             debugUIStyle.fontSize = 30;
-
+            /*
             Animator charAnimator = characterGO.GetComponent<Animator>();
             AnimatorClipInfo[] animatorClipInfo = charAnimator.GetCurrentAnimatorClipInfo(0);
             AnimationClip currentClip = animatorClipInfo.Length > 0 ? animatorClipInfo[0].clip : null;
             if (currentClip != null)
                 GUI.Label(new Rect(10, 10, 300, 100), "CurrentAnimation: " + currentClip.name, debugUIStyle);
+            */
         }
     }
 }
