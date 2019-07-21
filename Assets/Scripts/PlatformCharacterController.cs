@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using DragonBones;
 
 public class PlatformCharacterController : MonoBehaviour {
-    public Text debugSpeed;
+    //public Text debugSpeed;
 
     public float moveForce = 365f;
     public float initSpeed = 5f;
@@ -19,19 +20,23 @@ public class PlatformCharacterController : MonoBehaviour {
 
     private bool grounded = false;
     //private Animator anim;
+    private UnityArmatureComponent animComponent;
     private Rigidbody2D rb2d;
     private bool autorun = false;
     private float currentSpeed;
-    private Transform groundCheck;
+    private UnityEngine.Transform groundCheck;
     private bool facingRight = true;
     private bool jump = false;
     //bool jumpInput = false;
     //private float timeSinceJump = 0.0f;
+    private GUIStyle debugUIStyle = new GUIStyle();
+
 
     //called before start
     void Awake()
     {
         //anim = GetComponent<Animator>();
+        animComponent = GetComponent<UnityArmatureComponent>();
         rb2d = GetComponent<Rigidbody2D>();
         groundCheck = transform.Find("GroundCheck");
         Assert.IsNotNull(groundCheck, "GroundCheck not found!");
@@ -45,9 +50,8 @@ public class PlatformCharacterController : MonoBehaviour {
         //timeSinceJump = jumpForceWindow;
         autorun = false;
         currentSpeed = initSpeed;
-#if UNITY_EDITOR
-        //InvokeRepeating("PrintVelocityX", 1.0f, 0.1f);
-#endif
+
+        animComponent.animation.Play("Idle");
     }
 
 	// Update is called once per frame
@@ -94,7 +98,7 @@ public class PlatformCharacterController : MonoBehaviour {
         //anim.SetFloat("Speed", Mathf.Abs(h));
         //anim.SetBool("Grounded", grounded);
 
-        if(h * rb2d.velocity.x < currentSpeed)
+        if (h * rb2d.velocity.x < currentSpeed)
             rb2d.AddForce(Vector2.right * h * moveForce);
 
         //kinda rough solution, maybe use drag instead
@@ -109,12 +113,41 @@ public class PlatformCharacterController : MonoBehaviour {
         if (jump)
         //if(timeSinceJump <= jumpForceWindow && jumpInput)
         {
-            //anim.SetTrigger("Jump"); //not used right now, maybe remove later
             rb2d.AddForce(new Vector2(0f, jumpForce));
             jump = false;
             //Debug.Log("jump");
         }
         //timeSinceJump += Time.deltaTime;
+        UpdateAnimations();
+    }
+
+    private void FadeInAnimIfNotActive(string animName, float fadeTime)
+    {
+        string lastAnim = animComponent.animation.lastAnimationName;
+        if (lastAnim != animName)
+        {
+            animComponent.animation.FadeIn(animName, fadeTime);
+        }
+    }
+
+    private float HorizontalVelocityAbs()
+    {
+        //might change to something more complex later, hence separate function
+        return Mathf.Abs(rb2d.velocity.x); 
+    }
+    private void UpdateAnimations()
+    {
+        //could use some sort of state machine, but for now simple logic will be enough
+        //string lastAnim = animComponent.animation.lastAnimationName;
+        if (grounded)
+        {
+            string groundedAnim = HorizontalVelocityAbs() > 0.1f ? "Run" : "Idle";
+            FadeInAnimIfNotActive(groundedAnim, 0.2f);
+        }
+        else // in air
+        {
+            FadeInAnimIfNotActive("Jump", 0.2f);
+        }
     }
 
     void Flip()
@@ -128,11 +161,6 @@ public class PlatformCharacterController : MonoBehaviour {
     public bool IsMovingUp()
     {
         return rb2d.velocity.y > 0.01;
-    }
-
-    void PrintVelocityX()
-    {
-        debugSpeed.text = rb2d.velocity.x.ToString("0.0");
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -151,6 +179,25 @@ public class PlatformCharacterController : MonoBehaviour {
             other.gameObject.SetActive(false);
             addScore(Score.CollectableType.Gem);
             //Debug.Log("add coin score");
+        }
+    }
+
+    void OnGUI()
+    {
+        //debug stuff
+        if (Debug.isDebugBuild)
+        {
+            debugUIStyle.fontSize = 30;
+            string animName = animComponent.animation.lastAnimationName;
+            animName = !string.IsNullOrEmpty(animName) ? animName : "no animation";
+            GUI.Label(new Rect(10, 10, 300, 100), "CurrentAnimation: " + animName, debugUIStyle);
+            /*
+            Animator charAnimator = characterGO.GetComponent<Animator>();
+            AnimatorClipInfo[] animatorClipInfo = charAnimator.GetCurrentAnimatorClipInfo(0);
+            AnimationClip currentClip = animatorClipInfo.Length > 0 ? animatorClipInfo[0].clip : null;
+            if (currentClip != null)
+                GUI.Label(new Rect(10, 10, 300, 100), "CurrentAnimation: " + currentClip.name, debugUIStyle);
+            */
         }
     }
 }

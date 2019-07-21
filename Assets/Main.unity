@@ -1785,7 +1785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterGO: {fileID: 7061513277378973234}
   deathLimit: -40
-  gameSpeed: 1
+  gameSpeed: 0.5
   gameOverText: {fileID: 900560091}
 --- !u!4 &1828454644
 Transform:
@@ -2095,7 +2095,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.033657134, y: 1.6}
+  m_Offset: {x: 0.0066030025, y: 1.6000001}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2106,7 +2106,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.901179, y: 1.8451428}
+  m_Size: {x: 1.8470707, y: 1.8451428}
   m_EdgeRadius: 0
 --- !u!50 &4717322393771733086
 Rigidbody2D:
@@ -2157,7 +2157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049f39bc38e63f24c8e08f7c575d16b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugSpeed: {fileID: 796135126}
   moveForce: 365
   initSpeed: 5
   maxSpeed: 10
