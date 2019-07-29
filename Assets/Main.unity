@@ -1785,7 +1785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterGO: {fileID: 7061513277378973234}
   deathLimit: -40
-  gameSpeed: 0.5
+  gameSpeed: 1
   gameOverText: {fileID: 900560091}
 --- !u!4 &1828454644
 Transform:

@@ -3,29 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using DragonBones;
 
+/*
+ * todo:
+ * + copy green guy atlas to assets
+ * - load both atlases and try to swap them
+ * + try to unload unused ones
+ * - try to play with slot replacement
+ * + try changing whole armature
+ * */
+
 public class CharAnimsDragBon : MonoBehaviour
 {
     private UnityArmatureComponent animComponent;
+    private bool isRed = true;
     // Start is called before the first frame update
     void Start()
     {
-        /*
-        DragonBonesData dbd = UnityFactory.factory.LoadDragonBonesData("RedGuy/RedGuy_ske"); // DragonBones file path (without suffix)
-        UnityTextureAtlasData tad = UnityFactory.factory.LoadTextureAtlasData("RedGuy/RedGuy_tex"); //Texture atlas file path (without suffix) 
+        
+        UnityFactory.factory.LoadDragonBonesData("RedGuy/RedGuy_ske");
+        UnityFactory.factory.LoadTextureAtlasData("RedGuy/RedGuy_tex");
 
-        // Create armature.
-        uac = UnityFactory.factory.BuildArmatureComponent("RedGuy");
-        // Input armature name
+        UnityFactory.factory.LoadDragonBonesData("GreenGuy/GreenGuy_ske");
+        UnityFactory.factory.LoadTextureAtlasData("GreenGuy/GreenGuy_tex");
+        
 
-        // Play animation.
-        uac.animation.Play("Idle");
+        animComponent = UnityFactory.factory.BuildArmatureComponent("RedGuy");
+        isRed = true;
 
-        // Change armatureposition.
-        uac.transform.localPosition = transform.position;//;new Vector3(0.0f, 0.0f, 0.0f);
-        */
-        animComponent = GetComponent<UnityArmatureComponent>();
+        animComponent.transform.localPosition = transform.position;
+        animComponent.transform.parent = transform;
+        //transform.position = new Vector2(transform.position.x, transform.position.y - 1f);
+        
+        //animComponent = GetComponent<UnityArmatureComponent>();
         animComponent.AddDBEventListener(EventObject.LOOP_COMPLETE, OnAnimationCompleteEventHandler);
         animComponent.animation.Play("Idle");
+
     }
 
     // Update is called once per frame
@@ -37,11 +49,56 @@ public class CharAnimsDragBon : MonoBehaviour
         {
             animComponent.animation.FadeIn("Jump", 0.2f);
         }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            //animComponent.armature.
+            //UnityFactory.factory.
+            //animComponent.
+            Debug.Log("Anim event skin change attempt");
+            string newSkin = isRed ? "GreenGuy" : "RedGuy";
+            ArmatureData newArmatureData = UnityFactory.factory.GetArmatureData(newSkin);
+            UnityFactory.factory.ReplaceSkin(animComponent.armature, newArmatureData.defaultSkin);
+            isRed = !isRed;
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            DragonBonesDataDebugPrint();
+
+            UnityFactory.factory.RemoveDragonBonesData("GreenGuy");
+            UnityFactory.factory.RemoveTextureAtlasData("GreenGuy");
+
+            DragonBonesDataDebugPrint();
+
+        }
+    }
+
+    private void DragonBonesDataDebugPrint()
+    {
+        string result = "Anims info:\n";
+        result += "DragonBones data:\n";
+        Dictionary<string, DragonBonesData> d = UnityFactory.factory.GetAllDragonBonesData();
+        foreach (KeyValuePair<string, DragonBonesData> entry in d)
+        {
+            result += entry.Key.ToString() + "\n";
+        }
+        result += "Texture atlases:\n";
+        Dictionary<string, List<TextureAtlasData>> t = UnityFactory.factory.GetAllTextureAtlasData();
+        foreach (KeyValuePair<string, List<TextureAtlasData>> entry in t)
+        {
+            result += entry.Key + "\n";
+            foreach (TextureAtlasData tad in entry.Value)
+            {
+                result += tad.name + "\n";
+            }
+        }
+        Debug.Log(result);
     }
 
     void OnAnimationCompleteEventHandler(string type, EventObject eventObject)
     {
-        Debug.Log("Anim event: " + type);
+        //Debug.Log("Anim event: " + type);
         if (eventObject.animationState.name == "Jump")
         {
             animComponent.animation.FadeIn("Idle", 0.2f);

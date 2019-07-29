@@ -49,7 +49,8 @@ using UnityEngine.Assertions;
  * + fix new char anims
  * + coin and gem animation (up-down wobble)
  * switch to dragonbones animation
- * make possible to switch characters skins
+ * cleanup unity animations
+ * make possible to switch characters skins (char switch menu)
  * pause button
  * screenshot button
  * fix platform texture sizes
