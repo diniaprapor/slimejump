@@ -49,6 +49,8 @@ using UnityEngine.Assertions;
  * + fix new char anims
  * + coin and gem animation (up-down wobble)
  * switch to dragonbones animation
+ * load char anims dynamically
+ * create char at game start instead of keeping it in scene
  * cleanup unity animations
  * make possible to switch characters skins (char switch menu)
  * pause button
@@ -64,9 +66,9 @@ using UnityEngine.Assertions;
  * add some basic music and sound
  * add basic effects on coin collect
  * localize text
- * skin choice
  * online leaderboard
  * limited restored over time lives and watch ad / in-app to skip that
+ * 
 */
 
 //global vars and top level game logic

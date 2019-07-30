@@ -50,6 +50,7 @@ public class CharAnimsDragBon : MonoBehaviour
             animComponent.animation.FadeIn("Jump", 0.2f);
         }
 
+        //test skin change
         if (Input.GetKeyDown(KeyCode.T))
         {
             //animComponent.armature.
@@ -62,6 +63,7 @@ public class CharAnimsDragBon : MonoBehaviour
             isRed = !isRed;
         }
 
+        //test data ubnload
         if (Input.GetKeyDown(KeyCode.I))
         {
             DragonBonesDataDebugPrint();

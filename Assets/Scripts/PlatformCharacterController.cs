@@ -20,7 +20,6 @@ public class PlatformCharacterController : MonoBehaviour {
 
     private bool grounded = false;
     //private Animator anim;
-    private UnityArmatureComponent animComponent;
     private Rigidbody2D rb2d;
     private bool autorun = false;
     private float currentSpeed;
@@ -31,12 +30,13 @@ public class PlatformCharacterController : MonoBehaviour {
     //private float timeSinceJump = 0.0f;
     private GUIStyle debugUIStyle = new GUIStyle();
 
+    private UnityArmatureComponent animComponent;
 
     //called before start
     void Awake()
     {
-        //anim = GetComponent<Animator>();
-        animComponent = GetComponent<UnityArmatureComponent>();
+        InitAnimations();
+
         rb2d = GetComponent<Rigidbody2D>();
         groundCheck = transform.Find("GroundCheck");
         Assert.IsNotNull(groundCheck, "GroundCheck not found!");
@@ -135,6 +135,19 @@ public class PlatformCharacterController : MonoBehaviour {
         //might change to something more complex later, hence separate function
         return Mathf.Abs(rb2d.velocity.x); 
     }
+
+    private void InitAnimations()
+    {
+        UnityFactory.factory.LoadDragonBonesData("RedGuy/RedGuy_ske");
+        UnityFactory.factory.LoadTextureAtlasData("RedGuy/RedGuy_tex");
+
+        animComponent = UnityFactory.factory.BuildArmatureComponent("RedGuy");
+
+        animComponent.transform.localPosition = transform.position;
+        animComponent.transform.localScale = transform.localScale;
+        animComponent.transform.parent = transform;
+    }
+
     private void UpdateAnimations()
     {
         //could use some sort of state machine, but for now simple logic will be enough
