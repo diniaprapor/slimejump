@@ -78,13 +78,14 @@ public class GameController : MonoBehaviour
     public static float collectableSpawnProbability = 0.5f;
     public static float gemSpawnProbability = 0.2f;
 
-    public GameObject characterGO;
+    public GameObject heroPrefab;//characterGO;
     public float deathLimit = -40f;
     public float gameSpeed = 1.0f;
 
     public Text gameOverText;
 
     //private CharacterController characterController;
+    private GameObject heroInstance;
     private delegate void UpdateDelegate();
     private UpdateDelegate currentUpdate;
 
@@ -98,20 +99,15 @@ public class GameController : MonoBehaviour
     //called before start
     void Awake()
     {
-        Assert.IsNotNull(characterGO, "Character GameObject not set!");
-        initialCharScale = characterGO.transform.localScale;
-        SetupPlatformSpawnManager();
+        Assert.IsNotNull(heroPrefab, "Character GameObject not set!");
     }
+
     // Start is called before the first frame update
     void Start()
     {
         score = GetComponent<Score>();
 
         SetupPauseState();
-
-        //set score adding callback
-        PlatformCharacterController pcc = characterGO.GetComponent<PlatformCharacterController>();
-        pcc.addScore = score.AddScore;
     }
 
     // Update is called once per frame
@@ -137,7 +133,7 @@ public class GameController : MonoBehaviour
     void GameUpdate()
     {
         //check death
-        if (characterGO.transform.position.y < deathLimit)
+        if (heroInstance.transform.position.y < deathLimit)
         {
             SceneManager.LoadScene("Main");
         }
@@ -157,7 +153,9 @@ public class GameController : MonoBehaviour
 #endif
         if (anykey)
         {
-            SetCharacterVisible(true);
+            //spawn hero
+            //SetCharacterVisible(true);
+            InstantiateHero();
             gameOverText.gameObject.SetActive(false);
             currentUpdate = GameUpdate;
             Time.timeScale = gameSpeed;
@@ -186,18 +184,63 @@ public class GameController : MonoBehaviour
         }
         scoreValText.text = score.GetScore().ToString();
         hiScoreValText.text = score.GetHiScore().ToString();
-        SetCharacterVisible(false);
+        //SetCharacterVisible(false); 
+        RemoveHero(); //destroy hero instance if created
     }
 
     private void SetCharacterVisible(bool visible)
     {
         if (visible)
         {
-            characterGO.transform.localScale = initialCharScale;
+            heroInstance.transform.localScale = initialCharScale;
         }
         else
         {
-            characterGO.transform.localScale = Vector3.zero;
+            heroInstance.transform.localScale = Vector3.zero;
+        }
+    }
+
+    private void InstantiateHero()
+    {
+        Transform hp = transform.Find("HeroSpawn");
+        heroInstance = Instantiate<GameObject>(heroPrefab, hp.position, hp.rotation);
+        initialCharScale = heroInstance.transform.localScale;
+
+        //set score adding callback
+        PlatformCharacterController pcc = heroInstance.GetComponent<PlatformCharacterController>();
+        pcc.addScore = score.AddScore;
+
+        SetupPlatformSpawnManager();
+
+        //init camera follow
+        SetCameraFollow(heroInstance.transform);
+    }
+
+    private void RemoveHero()
+    {
+        if(heroInstance != null)
+        {
+            SetCameraFollow(null);
+
+            Destroy(heroInstance);
+            heroInstance = null;
+        }
+    }
+
+    private void SetCameraFollow(Transform t)
+    {
+        GameObject cam = GameObject.Find("Main Camera");
+        if (cam)
+        {
+            FollowCamera fc = cam.GetComponent<FollowCamera>();
+            if (t != null)
+                fc.StartFollowing(t);
+            else
+                fc.StopFollowing();
+        }
+        else
+        {
+            Debug.Log("main camera not found");
         }
     }
 
@@ -206,11 +249,8 @@ public class GameController : MonoBehaviour
         PlatformSpawnManager sm = GetComponent<PlatformSpawnManager>();
         Assert.IsNotNull(sm, "Spawn Manager component not found!");
 
-        sm.SetLowerLimit(deathLimit);
-        sm.SetCharacterTransform(characterGO.transform);
-        //sot sure if the best way, but looks better than using position of GameController object.
         Transform op = transform.Find("OriginPosition");
-        sm.SetOriginPosition(op.position);
+        sm.ResetAndStartSpawning(heroInstance.transform, op.position, deathLimit);
     }
 
     void OnGUI()

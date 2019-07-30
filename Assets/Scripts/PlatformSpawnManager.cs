@@ -14,7 +14,7 @@ public class PlatformSpawnManager : MonoBehaviour
     public bool debugPlacePlatformsAdjacent = false;
 
     private float lowerLimit;
-    private Transform characterTransform;
+    private Transform characterTransform = null;
     private Vector2 originPosition;
 
     private GameObject[] platforms;
@@ -26,14 +26,14 @@ public class PlatformSpawnManager : MonoBehaviour
     void Start()
     {
         //SetLowerLimit();
-        previousPlatformSize = -1.0f;
-        previousPlatformId = 0;
+        //previousPlatformSize = -1.0f;
+        //previousPlatformId = 0;
 
         //originPosition = transform.position;
         //Initialize the platforms collection.
         platforms = new GameObject[poolSize];
 
-        SpawnAll();
+        //SpawnAll();
     }
 
     private bool FirstPlatformSpawn()
@@ -93,14 +93,17 @@ public class PlatformSpawnManager : MonoBehaviour
 
     private void Update()
     {
-        //check when there is a need for new platform and reuse oldest one
-        float hDist = characterTransform.position.x - platforms[currentPlatform].transform.position.x;
-        //float vDist = character.transform.position.y - platforms[currentPlatform].transform.position.y;
-        bool canReuse = hDist > horizontalRespawnDist;// || vDist > verticalMax * verticalRespawnMult;
-        if (canReuse)
+        if (characterTransform != null)
         {
-            //Debug.Log("reuse platform " + currentPlatform);
-            SpawnOne();
+            //check when there is a need for new platform and reuse oldest one
+            float hDist = characterTransform.position.x - platforms[currentPlatform].transform.position.x;
+            //float vDist = character.transform.position.y - platforms[currentPlatform].transform.position.y;
+            bool canReuse = hDist > horizontalRespawnDist;// || vDist > verticalMax * verticalRespawnMult;
+            if (canReuse)
+            {
+                //Debug.Log("reuse platform " + currentPlatform);
+                SpawnOne();
+            }
         }
     }
 
@@ -110,6 +113,18 @@ public class PlatformSpawnManager : MonoBehaviour
         return p.SizeX();
     }
 
+    public void ResetAndStartSpawning(Transform characterTransform, Vector2 originPosition, float lowerLimit)
+    {
+        previousPlatformSize = -1.0f;
+        previousPlatformId = 0;
+
+        this.characterTransform = characterTransform;
+        this.originPosition = originPosition;
+        this.lowerLimit = lowerLimit;
+
+        SpawnAll();
+    }
+/*
     public void SetLowerLimit(float ll)
     {
         lowerLimit = ll;
@@ -127,4 +142,5 @@ public class PlatformSpawnManager : MonoBehaviour
         originPosition = op;
         //Debug.Log("Origin position set: " + originPosition.ToString());
     }
+    */
 }
