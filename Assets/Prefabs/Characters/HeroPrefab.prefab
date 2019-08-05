@@ -145,3 +145,4 @@ MonoBehaviour:
   maxSpeed: 10
   timeToMaxSpeed: 150
   jumpForce: 1000
+  charScale: 1.5

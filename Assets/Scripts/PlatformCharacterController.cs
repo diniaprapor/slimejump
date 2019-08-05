@@ -14,6 +14,7 @@ public class PlatformCharacterController : MonoBehaviour {
     public float timeToMaxSpeed = 60; //seconds
     public float jumpForce = 1000f;
     //public float jumpForceWindow = 0.2f; //time from jump start to add jump force
+    public float charScale = 1f;
 
     public delegate void AddScoreDelegate(Score.CollectableType ct);
     public AddScoreDelegate addScore;
@@ -138,13 +139,14 @@ public class PlatformCharacterController : MonoBehaviour {
 
     private void InitAnimations()
     {
-        UnityFactory.factory.LoadDragonBonesData("RedGuy/RedGuy_ske");
-        UnityFactory.factory.LoadTextureAtlasData("RedGuy/RedGuy_tex");
+        string charName = "Maksim";
+        UnityFactory.factory.LoadDragonBonesData(charName + "/" + charName + "_ske");
+        UnityFactory.factory.LoadTextureAtlasData(charName + "/" + charName + "_tex");
 
-        animComponent = UnityFactory.factory.BuildArmatureComponent("RedGuy");
+        animComponent = UnityFactory.factory.BuildArmatureComponent(charName);
 
         animComponent.transform.localPosition = transform.position;
-        animComponent.transform.localScale = transform.localScale;
+        animComponent.transform.localScale = transform.localScale * charScale;
         animComponent.transform.parent = transform;
     }
 
@@ -159,7 +161,7 @@ public class PlatformCharacterController : MonoBehaviour {
         }
         else // in air
         {
-            FadeInAnimIfNotActive("Jump", 0.2f);
+            FadeInAnimIfNotActive("JumpFloat", 0.2f);
         }
     }
 
