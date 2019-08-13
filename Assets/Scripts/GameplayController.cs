@@ -48,38 +48,43 @@ using UnityEngine.Assertions;
  * + make straight infinite run mode for debugging
  * + fix new char anims
  * + coin and gem animation (up-down wobble)
- * switch to dragonbones animation
- * load char anims dynamically
- * create char at game start instead of keeping it in scene
- * cleanup unity animations
+ * + switch to dragonbones animation
+ * + load char anims dynamically
+ * + create char at game start instead of keeping it in scene
+ * + cleanup unity animations
+ * + pause button
+ * - screenshot button
+ * Separate main menu and gameplay
+ * In-game pause menu
+ * Gameover menu
  * make possible to switch characters skins (char switch menu)
- * pause button
- * ui icons to spritesheet
- * screenshot button
- * fix platform texture sizes
+ * currency system
+ * fix platform texture sizes/scale
  * show previous record distance
  * !make camera resolution independent
  * settings menu
  * tasks menu
- * currency saver
+ * shop
  * achievement system
- * slow fall ability?
- * double jump?
- * dash or jump + dash?
  * add some basic music and sound
  * add basic effects on coin collect
  * localize text
  * online leaderboard
  * limited restored over time lives and watch ad / in-app to skip that
- * sounds and music
+ * ui icons to spritesheet
+ * AssetBundle support
+ * Player name
+ * Play login support
+ * slow fall ability?
+ * double jump?
+ * dash or jump + dash?
 */
 
 //global vars and top level game logic
-public class GameController : MonoBehaviour
+public class GameplayController : MonoBehaviour
 {
-    //can't set 'em in inspector, maybe will refactor some day
-    public static float collectableSpawnProbability = 0.5f;
-    public static float gemSpawnProbability = 0.2f;
+    public float collectableSpawnProbability = 0.5f;
+    public float gemSpawnProbability = 0.2f;
 
     public GameObject heroPrefab;//characterGO;
     public float deathLimit = -40f;

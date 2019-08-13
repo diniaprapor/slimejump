@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class PlatformSpawnManager : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class PlatformSpawnManager : MonoBehaviour
     private int currentPlatform = 0;
     private float previousPlatformSize;
     private int previousPlatformId;
+
+    private float collectableSpawnProbability = 0.5f;
+    private float gemSpawnProbability = 0.2f;
 
     // Use this for initialization
     void Start()
@@ -54,7 +58,11 @@ public class PlatformSpawnManager : MonoBehaviour
         int prefabStartIndex = previousPlatformId == 0 ? 1 : 0; //should prevent from shortest platform appearing twice in a row
         int prefabId = FirstPlatformSpawn() ? (platformPrefabs.Length - 1) : Random.Range(prefabStartIndex, platformPrefabs.Length); //always make first platform longest
         previousPlatformId = prefabId;
+
         platforms[currentPlatform] = (GameObject)Instantiate(platformPrefabs[prefabId], Vector2.zero, Quaternion.identity);
+        SpawnCoins sc = platforms[currentPlatform].GetComponent<SpawnCoins>();
+        Assert.IsNotNull(sc, "SpawnCoins component not found!");
+        sc.SpawnCollectables(collectableSpawnProbability, gemSpawnProbability);
 
         float currentPlatformSize = PlatformSize(platforms[currentPlatform].transform);
         //update origin position

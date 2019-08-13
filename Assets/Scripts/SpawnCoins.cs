@@ -8,21 +8,20 @@ public class SpawnCoins : MonoBehaviour {
     public GameObject gemPrefab;
     private GameObject[] coins;
 
-	// Use this for initialization
-	void Start () {
+	void Awake () {
         coins = new GameObject[coinSpawns.Length];
 
-        Spawn();
+        //Spawn();
 	}
 	
-    void Spawn()
+    public void SpawnCollectables(float collectableSpawnProbability, float gemSpawnProbability)
     {
         for(int i=0; i<coinSpawns.Length; i++)
         {
-            bool spawnAnything = Random.Range(0f, 1f) < GameController.collectableSpawnProbability;
-            bool spawnGem = Random.Range(0f, 1f) < GameController.gemSpawnProbability; 
+            bool spawnAnything = Random.Range(0f, 1f) < collectableSpawnProbability;
             if (spawnAnything)
             {
+                bool spawnGem = Random.Range(0f, 1f) < gemSpawnProbability;
                 GameObject obj = spawnGem ? gemPrefab : coinPrefab;
                 coins[i] = (GameObject)Instantiate(obj, coinSpawns[i].transform.position, Quaternion.identity);
                 //needed for proper destruction
@@ -31,17 +30,18 @@ public class SpawnCoins : MonoBehaviour {
         }
     }
 
-    void ClearCoins()
+    public void ClearCollectables()
     {
         foreach (GameObject coin in coins)
         {
             Destroy(coin);
         }
     }
-
+    /*
     public void Reset()
     {
         ClearCoins();
         Spawn();
     }
+    */
 }

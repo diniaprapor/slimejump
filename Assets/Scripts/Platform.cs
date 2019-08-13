@@ -39,7 +39,8 @@ public class Platform : MonoBehaviour {
     {
         transform.rotation = Quaternion.identity;
         pf.Reset();
-        sc.Reset();
+        //sc.Reset();
+        sc.ClearCollectables();
     }
 
     public float SizeX()
