@@ -167,6 +167,7 @@ public class GameplayController : MonoBehaviour
             InstantiateHero();
             gameOverText.gameObject.SetActive(false);
             InGameUI.SetActive(true);
+            PauseOverlaySetActive(false);
             currentUpdate = GameUpdate;
             Time.timeScale = gameSpeed;
             score.Reset();
@@ -282,18 +283,34 @@ public class GameplayController : MonoBehaviour
         }
     }
 
-    public void PauseClick()
+    private void PauseOverlaySetActive(bool active)
     {
-        if(currentUpdate == GameUpdate)
+        GameObject pauseOverlay = InGameUI.transform.Find("PauseOverlay").gameObject;
+        pauseOverlay.SetActive(active);
+        GameObject pauseBtn = InGameUI.transform.Find("PauseButton").gameObject;
+        pauseBtn.SetActive(!active);
+    }
+
+    public void PauseClickStart()
+    {
+        if(currentUpdate == GameUpdate && Time.timeScale > 0)
         {
-            if(Time.timeScale < Mathf.Epsilon)
-            {
-                Time.timeScale = gameSpeed;
-            }
-            else
-            {
-                Time.timeScale = 0f;
-            }
+            PauseOverlaySetActive(true);
+            Time.timeScale = 0f;
         }
+    }
+
+    public void PauseClickResume()
+    {
+        if (currentUpdate == GameUpdate && Time.timeScale < Mathf.Epsilon)
+        {
+            PauseOverlaySetActive(false);
+            Time.timeScale = gameSpeed;
+        }
+    }
+
+    public void PauseClickExit()
+    {
+        PauseClickResume();
     }
 }
