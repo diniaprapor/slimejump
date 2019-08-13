@@ -54,11 +54,14 @@ using UnityEngine.Assertions;
  * cleanup unity animations
  * make possible to switch characters skins (char switch menu)
  * pause button
+ * ui icons to spritesheet
  * screenshot button
  * fix platform texture sizes
  * show previous record distance
  * !make camera resolution independent
  * settings menu
+ * tasks menu
+ * currency saver
  * achievement system
  * slow fall ability?
  * double jump?
@@ -68,7 +71,7 @@ using UnityEngine.Assertions;
  * localize text
  * online leaderboard
  * limited restored over time lives and watch ad / in-app to skip that
- * 
+ * sounds and music
 */
 
 //global vars and top level game logic
@@ -83,6 +86,7 @@ public class GameController : MonoBehaviour
     public float gameSpeed = 1.0f;
 
     public Text gameOverText;
+    public GameObject InGameUI;
 
     //private CharacterController characterController;
     private GameObject heroInstance;
@@ -157,6 +161,7 @@ public class GameController : MonoBehaviour
             //SetCharacterVisible(true);
             InstantiateHero();
             gameOverText.gameObject.SetActive(false);
+            InGameUI.SetActive(true);
             currentUpdate = GameUpdate;
             Time.timeScale = gameSpeed;
             score.Reset();
@@ -167,6 +172,7 @@ public class GameController : MonoBehaviour
     {
         currentUpdate = PauseUpdate;
         Time.timeScale = 0;
+
         gameOverText.gameObject.SetActive(true);
         Text restartText = gameOverText.transform.Find("TapToRestart").gameObject.GetComponent<Text>();
         Text scoreValText = gameOverText.transform.Find("GOScoreVal").gameObject.GetComponent<Text>();
@@ -184,6 +190,8 @@ public class GameController : MonoBehaviour
         }
         scoreValText.text = score.GetScore().ToString();
         hiScoreValText.text = score.GetHiScore().ToString();
+
+        InGameUI.SetActive(false);
         //SetCharacterVisible(false); 
         RemoveHero(); //destroy hero instance if created
     }
@@ -266,6 +274,21 @@ public class GameController : MonoBehaviour
             if (currentClip != null)
                 GUI.Label(new Rect(10, 10, 300, 100), "CurrentAnimation: " + currentClip.name, debugUIStyle);
             */
+        }
+    }
+
+    public void PauseClick()
+    {
+        if(currentUpdate == GameUpdate)
+        {
+            if(Time.timeScale < Mathf.Epsilon)
+            {
+                Time.timeScale = gameSpeed;
+            }
+            else
+            {
+                Time.timeScale = 0f;
+            }
         }
     }
 }
