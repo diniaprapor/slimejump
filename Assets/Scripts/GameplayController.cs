@@ -99,6 +99,7 @@ public class GameplayController : MonoBehaviour
     private UpdateDelegate currentUpdate;
 
     private Score score;
+    private BgMusic bgm;
 
     private static bool firstRun = true;
     private Vector3 initialCharScale;
@@ -115,8 +116,11 @@ public class GameplayController : MonoBehaviour
     void Start()
     {
         score = GetComponent<Score>();
+        Assert.IsNotNull(score, "Score component not found!");
 
-        SetupPauseState();
+        bgm = GetComponent<BgMusic>();
+
+        SetupGameoverState();
     }
 
     // Update is called once per frame
@@ -171,10 +175,12 @@ public class GameplayController : MonoBehaviour
             currentUpdate = GameUpdate;
             Time.timeScale = gameSpeed;
             score.Reset();
+
+            bgm.PlayAudio("Boss Theme");
         }
     }
 
-    void SetupPauseState()
+    void SetupGameoverState()
     {
         currentUpdate = PauseUpdate;
         Time.timeScale = 0;
@@ -200,6 +206,8 @@ public class GameplayController : MonoBehaviour
         InGameUI.SetActive(false);
         //SetCharacterVisible(false); 
         RemoveHero(); //destroy hero instance if created
+
+        bgm.PlayAudio("Dungeon Theme");
     }
 
     private void SetCharacterVisible(bool visible)
