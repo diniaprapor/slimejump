@@ -99,7 +99,6 @@ public class GameplayController : MonoBehaviour
     private UpdateDelegate currentUpdate;
 
     private Score score;
-    private BgMusic bgm;
 
     private static bool firstRun = true;
     private Vector3 initialCharScale;
@@ -117,8 +116,6 @@ public class GameplayController : MonoBehaviour
     {
         score = GetComponent<Score>();
         Assert.IsNotNull(score, "Score component not found!");
-
-        bgm = GetComponent<BgMusic>();
 
         SetupGameoverState();
     }
@@ -176,7 +173,7 @@ public class GameplayController : MonoBehaviour
             Time.timeScale = gameSpeed;
             score.Reset();
 
-            bgm.PlayAudio("Boss Theme");
+            PlayBgMusic("Boss Theme");
         }
     }
 
@@ -207,7 +204,7 @@ public class GameplayController : MonoBehaviour
         //SetCharacterVisible(false); 
         RemoveHero(); //destroy hero instance if created
 
-        bgm.PlayAudio("Dungeon Theme");
+        PlayBgMusic("Dungeon Theme");
     }
 
     private void SetCharacterVisible(bool visible)
@@ -264,6 +261,16 @@ public class GameplayController : MonoBehaviour
         {
             Debug.Log("main camera not found");
         }
+    }
+
+    //not most elegant way, but have no ideas for better one at the moment
+    private void PlayBgMusic(string trackName)
+    {
+        GameObject cam = GameObject.Find("Main Camera");
+        Assert.IsNotNull(cam, "Main Camera not found!");
+        BgMusic bgm = cam.GetComponent<BgMusic>();
+        Assert.IsNotNull(bgm, "Bg Music component not found!");
+        bgm.PlayAudio(trackName);
     }
 
     private void SetupPlatformSpawnManager()

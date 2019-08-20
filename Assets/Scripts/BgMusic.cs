@@ -24,12 +24,12 @@ public class BgMusic : MonoBehaviour
     
     public void PlayAudio(string name)
     {
-        /*
         bool clipFound = false;
         for(int i = 0; i < audioClips.Length; i++)
         {
             if(audioClips[i].name == name)
             {
+                //audioSource.Stop();
                 Debug.Log("Audio " + name + " started");
                 //maybe needs check if already playing that
                 audioSource.clip = audioClips[i];
@@ -41,7 +41,6 @@ public class BgMusic : MonoBehaviour
         {
             Debug.Log("Audio " + name + " not found");
         }
-        */
     }
 
     public void StopAudio()
