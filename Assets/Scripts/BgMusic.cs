@@ -13,6 +13,7 @@ public class BgMusic : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         Assert.IsNotNull(audioSource, "Audio Source component not found!");
         audioSource.Stop();
+        audioSource.volume = 0.3f;
     }
     /*
     // Update is called once per frame

@@ -54,6 +54,8 @@ using UnityEngine.Assertions;
  * + cleanup unity animations
  * + pause button
  * - screenshot button
+ * bg music crossfade
+ * pause music on pause
  * Separate main menu and gameplay
  * In-game pause menu
  * Gameover menu
@@ -66,7 +68,7 @@ using UnityEngine.Assertions;
  * tasks menu
  * shop
  * achievement system
- * add some basic music and sound
+ * add some basic sound
  * add basic effects on coin collect
  * localize text
  * online leaderboard

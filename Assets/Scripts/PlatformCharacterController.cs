@@ -15,6 +15,10 @@ public class PlatformCharacterController : MonoBehaviour {
     public float jumpForce = 1000f;
     //public float jumpForceWindow = 0.2f; //time from jump start to add jump force
     public float charScale = 1f;
+    public AudioClip audioJump;
+    public AudioClip audioLand;
+    public AudioClip audioCoin;
+    public AudioClip audioGem;
 
     public delegate void AddScoreDelegate(Score.CollectableType ct);
     public AddScoreDelegate addScore;
@@ -33,6 +37,8 @@ public class PlatformCharacterController : MonoBehaviour {
 
     private UnityArmatureComponent animComponent;
 
+    private AudioSource audioSource;
+
     //called before start
     void Awake()
     {
@@ -41,6 +47,8 @@ public class PlatformCharacterController : MonoBehaviour {
         rb2d = GetComponent<Rigidbody2D>();
         groundCheck = transform.Find("GroundCheck");
         Assert.IsNotNull(groundCheck, "GroundCheck not found!");
+
+        AddAudioSource();
     }
 
     // Use this for initialization
@@ -57,7 +65,13 @@ public class PlatformCharacterController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        bool prevGrounded = grounded;
          grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+
+        if(grounded && !prevGrounded) //detect landing moment
+        {
+            audioSource.PlayOneShot(audioLand);
+        }
         //start running on first platform collision
         //because otherwise character starts moving in the air and nearly misses first platform
         if (grounded) autorun = true;
@@ -84,6 +98,7 @@ public class PlatformCharacterController : MonoBehaviour {
         if (jumpInput && grounded)
         {
             jump = true;
+            audioSource.PlayOneShot(audioJump);
             //timeSinceJump = 0.0f;
         }
 
@@ -186,6 +201,7 @@ public class PlatformCharacterController : MonoBehaviour {
             //Destroy(gameObject);
             other.gameObject.SetActive(false);
             addScore(Score.CollectableType.Coin);
+            audioSource.PlayOneShot(audioCoin);
             //Debug.Log("add coin score");
         }
         else if(other.gameObject.CompareTag("Gem"))
@@ -193,8 +209,17 @@ public class PlatformCharacterController : MonoBehaviour {
             //Destroy(gameObject);
             other.gameObject.SetActive(false);
             addScore(Score.CollectableType.Gem);
+            audioSource.PlayOneShot(audioGem);
             //Debug.Log("add coin score");
         }
+    }
+
+    private void AddAudioSource()
+    {
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.loop = false;
+        audioSource.playOnAwake = false;
+        //audioSource.volume = 0.0f;
     }
 
     void OnGUI()
