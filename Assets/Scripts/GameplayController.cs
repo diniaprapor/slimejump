@@ -55,7 +55,9 @@ using UnityEngine.Assertions;
  * + pause button
  * - screenshot button
  * bg music crossfade
- * pause music on pause
+ * + pause music on pause
+ * sound on/off in menu
+ * ui click sound 
  * Separate main menu and gameplay
  * In-game pause menu
  * Gameover menu
@@ -107,10 +109,14 @@ public class GameplayController : MonoBehaviour
 
     private GUIStyle debugUIStyle = new GUIStyle();
 
+    private BgMusic bgm;
+
     //called before start
     void Awake()
     {
         Assert.IsNotNull(heroPrefab, "Character GameObject not set!");
+
+        InitBgMusic();
     }
 
     // Start is called before the first frame update
@@ -175,7 +181,7 @@ public class GameplayController : MonoBehaviour
             Time.timeScale = gameSpeed;
             score.Reset();
 
-            PlayBgMusic("Boss Theme");
+            bgm.PlayAudio("Boss Theme");
         }
     }
 
@@ -206,7 +212,7 @@ public class GameplayController : MonoBehaviour
         //SetCharacterVisible(false); 
         RemoveHero(); //destroy hero instance if created
 
-        PlayBgMusic("Dungeon Theme");
+        bgm.PlayAudio("Dungeon Theme");
     }
 
     private void SetCharacterVisible(bool visible)
@@ -266,13 +272,12 @@ public class GameplayController : MonoBehaviour
     }
 
     //not most elegant way, but have no ideas for better one at the moment
-    private void PlayBgMusic(string trackName)
+    private void InitBgMusic()
     {
         GameObject cam = GameObject.Find("Main Camera");
         Assert.IsNotNull(cam, "Main Camera not found!");
-        BgMusic bgm = cam.GetComponent<BgMusic>();
+        bgm = cam.GetComponent<BgMusic>();
         Assert.IsNotNull(bgm, "Bg Music component not found!");
-        bgm.PlayAudio(trackName);
     }
 
     private void SetupPlatformSpawnManager()
@@ -314,6 +319,7 @@ public class GameplayController : MonoBehaviour
         {
             PauseOverlaySetActive(true);
             Time.timeScale = 0f;
+            bgm.PauseAudio();
         }
     }
 
@@ -323,6 +329,7 @@ public class GameplayController : MonoBehaviour
         {
             PauseOverlaySetActive(false);
             Time.timeScale = gameSpeed;
+            bgm.ResumeAudio();
         }
     }
 

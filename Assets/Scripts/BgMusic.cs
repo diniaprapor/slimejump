@@ -10,8 +10,9 @@ public class BgMusic : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        audioSource = GetComponent<AudioSource>();
-        Assert.IsNotNull(audioSource, "Audio Source component not found!");
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.loop = true;
+        audioSource.playOnAwake = false;
         audioSource.Stop();
         audioSource.volume = 0.3f;
     }
@@ -48,4 +49,15 @@ public class BgMusic : MonoBehaviour
     {
         audioSource.Stop();
     }
+
+    public void PauseAudio()
+    {
+        audioSource.Pause();
+    }
+
+    public void ResumeAudio()
+    {
+        audioSource.Play();
+    }
+
 }
