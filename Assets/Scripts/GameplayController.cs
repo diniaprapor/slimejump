@@ -54,23 +54,21 @@ using UnityEngine.Assertions;
  * + cleanup unity animations
  * + pause button
  * - screenshot button
- * bg music crossfade
+ * + button click sound 
+ * + In-game pause menu
  * + pause music on pause
- * sound on/off in menu
- * ui click sound 
+ * bg music crossfade
  * Separate main menu and gameplay
- * In-game pause menu
  * Gameover menu
  * make possible to switch characters skins (char switch menu)
  * currency system
  * fix platform texture sizes/scale
  * show previous record distance
  * !make camera resolution independent
- * settings menu
+ * settings menu + sound on/off
  * tasks menu
  * shop
  * achievement system
- * add some basic sound
  * add basic effects on coin collect
  * localize text
  * online leaderboard
