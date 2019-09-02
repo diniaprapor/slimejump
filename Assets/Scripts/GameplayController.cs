@@ -83,7 +83,7 @@ using UnityEngine.Assertions;
 */
 
 //global vars and top level game logic
-public class GameplayController : MonoBehaviour
+public class GameplayController : AState
 {
     public float collectableSpawnProbability = 0.5f;
     public float gemSpawnProbability = 0.2f;
@@ -127,7 +127,8 @@ public class GameplayController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    //void Update()
+    public override void Tick()
     {
         currentUpdate();
 
@@ -334,5 +335,20 @@ public class GameplayController : MonoBehaviour
     public void PauseClickExit()
     {
         PauseClickResume();
+    }
+
+    public override string GetName()
+    {
+        return "Game";
+    }
+
+    public override void Enter(AState from)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Exit(AState from)
+    {
+        throw new System.NotImplementedException();
     }
 }
