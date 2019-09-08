@@ -230,7 +230,7 @@ public class PlatformCharacterController : MonoBehaviour {
             debugUIStyle.fontSize = 30;
             string animName = animComponent.animation.lastAnimationName;
             animName = !string.IsNullOrEmpty(animName) ? animName : "no animation";
-            GUI.Label(new Rect(10, 10, 300, 100), "CurrentAnimation: " + animName, debugUIStyle);
+            GUI.Label(new Rect(10, 40, 300, 100), "CurrentAnimation: " + animName, debugUIStyle);
             /*
             Animator charAnimator = characterGO.GetComponent<Animator>();
             AnimatorClipInfo[] animatorClipInfo = charAnimator.GetCurrentAnimatorClipInfo(0);

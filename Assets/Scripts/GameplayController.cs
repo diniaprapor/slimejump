@@ -60,6 +60,7 @@ using UnityEngine.Assertions;
  * bg music crossfade
  * Separate main menu and gameplay
  * Gameover menu
+ * collect maxdistance, overall distance and overall score statistics
  * make possible to switch characters skins (char switch menu)
  * currency system
  * fix platform texture sizes/scale
@@ -95,6 +96,9 @@ public class GameplayController : AState
     public Text gameOverText;
     public GameObject InGameUI;
 
+    public string gameMusic = "Boss Theme";
+    public string menuMusic = "Dungeon Theme";
+
     //private CharacterController characterController;
     private GameObject heroInstance;
     private delegate void UpdateDelegate();
@@ -109,6 +113,25 @@ public class GameplayController : AState
 
     private BgMusic bgm;
 
+    public override void Enter(AState to)
+    {
+        //Awake
+        Assert.IsNotNull(heroPrefab, "Character GameObject not set!");
+        InitBgMusic();
+
+        //Start
+        score = GetComponent<Score>();
+        Assert.IsNotNull(score, "Score component not found!");
+        SetupGameoverState();
+    }
+
+    public override void Exit(AState from)
+    {
+        gameOverText.gameObject.SetActive(false);
+        InGameUI.SetActive(false);
+        RemoveHero();
+    }
+    /*
     //called before start
     void Awake()
     {
@@ -125,6 +148,7 @@ public class GameplayController : AState
 
         SetupGameoverState();
     }
+    */
 
     // Update is called once per frame
     //void Update()
@@ -152,7 +176,8 @@ public class GameplayController : AState
         //check death
         if (heroInstance.transform.position.y < deathLimit)
         {
-            SceneManager.LoadScene("Main");
+            //SceneManager.LoadScene("Main");
+            SetupGameoverState();
         }
     }
 
@@ -180,7 +205,7 @@ public class GameplayController : AState
             Time.timeScale = gameSpeed;
             score.Reset();
 
-            bgm.PlayAudio("Boss Theme");
+            bgm.PlayAudio(gameMusic);
         }
     }
 
@@ -211,7 +236,7 @@ public class GameplayController : AState
         //SetCharacterVisible(false); 
         RemoveHero(); //destroy hero instance if created
 
-        bgm.PlayAudio("Dungeon Theme");
+        bgm.PlayAudio(menuMusic);
     }
 
     private void SetCharacterVisible(bool visible)
@@ -334,21 +359,11 @@ public class GameplayController : AState
 
     public void PauseClickExit()
     {
-        PauseClickResume();
+        manager.SwitchState("Menu");
     }
 
     public override string GetName()
     {
         return "Game";
-    }
-
-    public override void Enter(AState from)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Exit(AState from)
-    {
-        throw new System.NotImplementedException();
     }
 }

@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     protected AState activeState;
     protected Dictionary<string, AState> stateDict = new Dictionary<string, AState>();
     protected List<AState>stateStack = new List<AState>();
+
+    private GUIStyle debugUIStyle = new GUIStyle();
+
     // Start is called before the first frame update
     protected void OnEnable()
     {
@@ -97,6 +100,21 @@ public class GameManager : MonoBehaviour
             state.Enter(null);
         }
         stateStack.Add(state);
+    }
+
+    void OnGUI()
+    {
+        //debug stuff
+        if (Debug.isDebugBuild)
+        {
+            debugUIStyle.fontSize = 30;
+            string currentState = "undefined";
+            if (stateStack.Count > 0)
+            {
+                currentState = stateStack[stateStack.Count - 1].GetName();
+            }
+            GUI.Label(new Rect(10, 10, 300, 100), "Current State: " + currentState, debugUIStyle);
+        }
     }
 }
 
