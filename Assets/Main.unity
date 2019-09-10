@@ -1407,7 +1407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &900560090
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3048,6 +3048,8 @@ MonoBehaviour:
   gameSpeed: 1
   gameOverText: {fileID: 900560091}
   InGameUI: {fileID: 2106124242}
+  gameMusic: Boss Theme
+  menuMusic: Dungeon Theme
 --- !u!4 &1828454644
 Transform:
   m_ObjectHideFlags: 0
@@ -3203,7 +3205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  menuUI: {fileID: 0}
+  menuUI: {fileID: 194454774}
 --- !u!4 &1976976250
 Transform:
   m_ObjectHideFlags: 0

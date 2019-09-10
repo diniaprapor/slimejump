@@ -6,15 +6,11 @@ using UnityEngine.Assertions;
 public class BgMusic : MonoBehaviour
 {
     public AudioClip[] audioClips;
-    private AudioSource audioSource;
+    private AudioSource audioSource = null;
     // Start is called before the first frame update
     void Awake()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.loop = true;
-        audioSource.playOnAwake = false;
-        audioSource.Stop();
-        audioSource.volume = 0.3f;
+
     }
     /*
     // Update is called once per frame
@@ -23,6 +19,18 @@ public class BgMusic : MonoBehaviour
         
     }
     */
+    private void CreateAudioSource()
+    {
+        if(audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.loop = true;
+            audioSource.playOnAwake = false;
+            audioSource.Stop();
+            audioSource.volume = 0.3f;
+            Debug.Log("audio sorce create");
+        }
+    }
     
     public void PlayAudio(string name)
     {
@@ -31,6 +39,7 @@ public class BgMusic : MonoBehaviour
         {
             if(audioClips[i].name == name)
             {
+                CreateAudioSource(); //create if not exists
                 //audioSource.Stop();
                 Debug.Log("Audio " + name + " started");
                 //maybe needs check if already playing that

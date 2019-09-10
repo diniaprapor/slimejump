@@ -60,6 +60,7 @@ using UnityEngine.Assertions;
  * bg music crossfade
  * Separate main menu and gameplay
  * Gameover menu
+ * nice bg for main menu (maybe random clouds scatter)
  * collect maxdistance, overall distance and overall score statistics
  * make possible to switch characters skins (char switch menu)
  * currency system
@@ -123,6 +124,8 @@ public class GameplayController : AState
         score = GetComponent<Score>();
         Assert.IsNotNull(score, "Score component not found!");
         SetupGameoverState();
+
+        CloudManager.spawnClouds = true;
     }
 
     public override void Exit(AState from)
