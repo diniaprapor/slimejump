@@ -58,6 +58,8 @@ using UnityEngine.Assertions;
  * + In-game pause menu
  * + pause music on pause
  * bg music crossfade
+ * button prefab
+ * countdown at game start instead of pause
  * Separate main menu and gameplay
  * Gameover menu
  * nice bg for main menu (maybe random clouds scatter)
