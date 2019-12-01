@@ -87,7 +87,7 @@ using UnityEngine.Assertions;
 */
 
 //global vars and top level game logic
-public class GameplayController : AState
+public class GameplayState : AState
 {
     public float collectableSpawnProbability = 0.5f;
     public float gemSpawnProbability = 0.2f;
@@ -104,8 +104,10 @@ public class GameplayController : AState
 
     //private CharacterController characterController;
     private GameObject heroInstance;
+    /*
     private delegate void UpdateDelegate();
     private UpdateDelegate currentUpdate;
+    */
 
     private Score score;
 
@@ -116,7 +118,17 @@ public class GameplayController : AState
 
     private BgMusic bgm;
 
-    public override void Enter(AState to)
+    private void SetupScene()
+    {
+            InstantiateHero();
+            InGameUI.SetActive(true);
+            Time.timeScale = gameSpeed;
+            score.Reset();
+
+            bgm.PlayAudio(gameMusic);
+    }
+
+    public override void Enter(AState from)
     {
         //Awake
         Assert.IsNotNull(heroPrefab, "Character GameObject not set!");
@@ -125,12 +137,12 @@ public class GameplayController : AState
         //Start
         score = GetComponent<Score>();
         Assert.IsNotNull(score, "Score component not found!");
-        SetupGameoverState();
+        SetupScene();
 
         CloudManager.spawnClouds = true;
     }
 
-    public override void Exit(AState from)
+    public override void Exit(AState to)
     {
         gameOverText.gameObject.SetActive(false);
         InGameUI.SetActive(false);
@@ -157,16 +169,22 @@ public class GameplayController : AState
 
     // Update is called once per frame
     //void Update()
-    public override void Tick()
+    void CheckDeath()
     {
-        currentUpdate();
+        //check death
+        if (heroInstance.transform.position.y < deathLimit)
+        {
+            //SceneManager.LoadScene("Main");
+            //SetupGameoverState();
+            manager.PushState("GameOver");
+        }
+    }
 
-        //exit app on back button
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
-
+    void CheckScreenshot()
+    {
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.P)){
+        if (Input.GetKeyDown(KeyCode.P))
+        {
             string folder = "Screenshots\\";
             if (!System.IO.Directory.Exists(folder))
                 System.IO.Directory.CreateDirectory(folder);
@@ -176,16 +194,29 @@ public class GameplayController : AState
 #endif
     }
 
+    public override void Tick()
+    {
+        //currentUpdate();
+        CheckDeath();
+
+        //exit app on back button
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+
+        CheckScreenshot();
+    }
+    /*
     void GameUpdate()
     {
         //check death
         if (heroInstance.transform.position.y < deathLimit)
         {
             //SceneManager.LoadScene("Main");
-            SetupGameoverState();
+            //SetupGameoverState();
         }
     }
-
+    */
+    /*
     void PauseUpdate()
     {
         bool anykey = false;
@@ -213,7 +244,8 @@ public class GameplayController : AState
             bgm.PlayAudio(gameMusic);
         }
     }
-
+    */
+    /*
     void SetupGameoverState()
     {
         currentUpdate = PauseUpdate;
@@ -243,7 +275,7 @@ public class GameplayController : AState
 
         bgm.PlayAudio(menuMusic);
     }
-
+    */
     private void SetCharacterVisible(bool visible)
     {
         if (visible)
@@ -333,7 +365,7 @@ public class GameplayController : AState
             */
         }
     }
-
+    /*
     private void PauseOverlaySetActive(bool active)
     {
         GameObject pauseOverlay = InGameUI.transform.Find("PauseOverlay").gameObject;
@@ -360,6 +392,11 @@ public class GameplayController : AState
             Time.timeScale = gameSpeed;
             bgm.ResumeAudio();
         }
+    }
+*/
+    public void PauseClickStart()
+    {
+        manager.PushState("Pause");
     }
 
     public void PauseClickExit()

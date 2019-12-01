@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CountdownState : AState
+public class PauseState : AState
 {
     public GameObject uiObj;
     /*
@@ -25,11 +25,11 @@ public class CountdownState : AState
     // Update is called once per frame
     public override void Tick()
     {
-
+        
     }
 
     public override string GetName()
     {
-        return "Countdown";
+        return "Pause";
     }
 }

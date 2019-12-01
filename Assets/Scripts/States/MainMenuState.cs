@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class MainMenuController : AState
+public class MainMenuState : AState
 {
     public GameObject menuUI;
     public string menuMusic = "Dungeon Theme";
@@ -51,5 +51,6 @@ public class MainMenuController : AState
     public void PlayClick()
     {
         manager.SwitchState("Game");
+        manager.PushState("Countdown");
     }
 }
