@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-public class GameOverState : AState
+public class SettingsState : AState
 {
     public GameObject uiObj;
     /*
@@ -32,6 +32,6 @@ public class GameOverState : AState
 
     public override string GetName()
     {
-        return "GameOver";
+        return "Settings";
     }
 }

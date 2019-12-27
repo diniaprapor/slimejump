@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class PauseState : AState
 {
@@ -14,6 +15,7 @@ public class PauseState : AState
     */
     public override void Enter(AState from)
     {
+        Assert.IsNotNull(uiObj, "uiObj not found!");
         uiObj.SetActive(true);
     }
 
@@ -31,5 +33,16 @@ public class PauseState : AState
     public override string GetName()
     {
         return "Pause";
+    }
+
+    public void PauseClickResume()
+    {
+        manager.PopState();
+    }
+
+    public void PauseClickExit()
+    {
+        manager.PopState();
+        manager.SwitchState("Menu");
     }
 }

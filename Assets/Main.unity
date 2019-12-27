@@ -175,7 +175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  uiObj: {fileID: 0}
+  uiObj: {fileID: 1815528526}
 --- !u!4 &92465441
 Transform:
   m_ObjectHideFlags: 0
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1828454643}
+      - m_Target: {fileID: 92465440}
         m_MethodName: PauseClickResume
         m_Mode: 1
         m_Arguments:
@@ -829,6 +829,7 @@ RectTransform:
   - {fileID: 900560090}
   - {fileID: 2106124243}
   - {fileID: 194454775}
+  - {fileID: 1815528527}
   - {fileID: 1140244209}
   - {fileID: 1395668718}
   m_Father: {fileID: 0}
@@ -899,6 +900,51 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &620241339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 620241341}
+  - component: {fileID: 620241340}
+  m_Layer: 0
+  m_Name: SettingsState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &620241340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620241339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75791dc383ca91d4d8f5f10ea01833fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 0}
+  uiObj: {fileID: 900560089}
+--- !u!4 &620241341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620241339}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &632882590
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,6 +1058,7 @@ MonoBehaviour:
   - {fileID: 1828454643}
   - {fileID: 168781849}
   - {fileID: 809964644}
+  - {fileID: 92465440}
 --- !u!4 &687607332
 Transform:
   m_ObjectHideFlags: 0
@@ -1187,7 +1234,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1828454643}
+      - m_Target: {fileID: 92465440}
         m_MethodName: PauseClickExit
         m_Mode: 1
         m_Arguments:
@@ -1803,7 +1850,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 583617922}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1140244210
 AudioSource:
@@ -2800,7 +2847,7 @@ RectTransform:
   m_Children:
   - {fileID: 759742462}
   m_Father: {fileID: 583617922}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3344,12 +3391,12 @@ GameObject:
   - component: {fileID: 1815528529}
   - component: {fileID: 1815528528}
   m_Layer: 5
-  m_Name: PauseOverlay
+  m_Name: PauseUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1815528527
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3357,14 +3404,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815528526}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 100848170}
   - {fileID: 770975499}
-  m_Father: {fileID: 2106124243}
-  m_RootOrder: 2
+  m_Father: {fileID: 583617922}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3461,7 +3508,6 @@ MonoBehaviour:
     type: 3}
   deathLimit: -40
   gameSpeed: 1
-  gameOverText: {fileID: 900560091}
   InGameUI: {fileID: 2106124242}
   gameMusic: Boss Theme
   menuMusic: Dungeon Theme
@@ -3951,7 +3997,6 @@ RectTransform:
   m_Children:
   - {fileID: 1715981433}
   - {fileID: 1323948319}
-  - {fileID: 1815528527}
   m_Father: {fileID: 583617922}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -96,7 +96,7 @@ public class GameplayState : AState
     public float deathLimit = -40f;
     public float gameSpeed = 1.0f;
 
-    public Text gameOverText;
+    //public Text gameOverText;
     public GameObject InGameUI;
 
     public string gameMusic = "Boss Theme";
@@ -110,43 +110,65 @@ public class GameplayState : AState
     */
 
     private Score score;
+    private BgMusic bgm;
 
-    private static bool firstRun = true;
+    //private static bool firstRun = true;
     private Vector3 initialCharScale;
 
     private GUIStyle debugUIStyle = new GUIStyle();
 
-    private BgMusic bgm;
-
-    private void SetupScene()
+    // Start is called before the first frame update
+    // for once actions
+    void Start()
     {
-            InstantiateHero();
-            InGameUI.SetActive(true);
-            Time.timeScale = gameSpeed;
-            score.Reset();
+        score = GetComponent<Score>();
+        Assert.IsNotNull(score, "Score component not found!");
+    }
 
-            bgm.PlayAudio(gameMusic);
+    private void PauseBtnSetActive(bool active)
+    {
+        GameObject pauseBtn = InGameUI.transform.Find("PauseButton").gameObject;
+        if (pauseBtn)
+        {
+            pauseBtn.SetActive(active);
+        }
     }
 
     public override void Enter(AState from)
     {
-        //Awake
-        Assert.IsNotNull(heroPrefab, "Character GameObject not set!");
-        InitBgMusic();
+        if(from && from.GetName() == "Pause")
+        {
+            PauseBtnSetActive(true);
+        }
+        else
+        {
+            InitBgMusic();
+            bgm.PlayAudio(gameMusic);
 
-        //Start
-        score = GetComponent<Score>();
-        Assert.IsNotNull(score, "Score component not found!");
-        SetupScene();
+            InstantiateHero();
+            score.Reset();
 
-        CloudManager.spawnClouds = true;
+            CloudManager.spawnClouds = true;
+            Debug.Log(string.Format("enter gameplay from {0}", from.GetName()));
+        }
+
+        //common actions
+        Time.timeScale = gameSpeed;
+        InGameUI.SetActive(true);
     }
 
     public override void Exit(AState to)
     {
-        gameOverText.gameObject.SetActive(false);
-        InGameUI.SetActive(false);
-        RemoveHero();
+        if (to && to.GetName() == "Pause")
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            InGameUI.SetActive(false);
+            RemoveHero();
+        }
+        //gameOverText.gameObject.SetActive(false);
     }
     /*
     //called before start
@@ -201,7 +223,10 @@ public class GameplayState : AState
 
         //exit app on back button
         if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
+        {
+            //Application.Quit();
+        }
+
 
         CheckScreenshot();
     }
@@ -276,6 +301,7 @@ public class GameplayState : AState
         bgm.PlayAudio(menuMusic);
     }
     */
+    /*
     private void SetCharacterVisible(bool visible)
     {
         if (visible)
@@ -287,9 +313,11 @@ public class GameplayState : AState
             heroInstance.transform.localScale = Vector3.zero;
         }
     }
-
+    */
     private void InstantiateHero()
     {
+        Assert.IsNotNull(heroPrefab, "Character GameObject not set!");
+
         Transform hp = transform.Find("HeroSpawn");
         heroInstance = Instantiate<GameObject>(heroPrefab, hp.position, hp.rotation);
         initialCharScale = heroInstance.transform.localScale;
@@ -397,11 +425,6 @@ public class GameplayState : AState
     public void PauseClickStart()
     {
         manager.PushState("Pause");
-    }
-
-    public void PauseClickExit()
-    {
-        manager.SwitchState("Menu");
     }
 
     public override string GetName()
