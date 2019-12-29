@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
 
@@ -57,9 +56,15 @@ using UnityEngine.Assertions;
  * + button click sound 
  * + In-game pause menu
  * + pause music on pause
+ * fix clouds
+ * fix gameover text
  * bg music crossfade
+ * button prefab
+ * countdown at game start instead of pause
  * Separate main menu and gameplay
  * Gameover menu
+ * nice bg for main menu (maybe random clouds scatter)
+ * collect maxdistance, overall distance and overall score statistics
  * make possible to switch characters skins (char switch menu)
  * currency system
  * fix platform texture sizes/scale
@@ -83,7 +88,7 @@ using UnityEngine.Assertions;
 */
 
 //global vars and top level game logic
-public class GameplayController : MonoBehaviour
+public class GameplayState : AState
 {
     public float collectableSpawnProbability = 0.5f;
     public float gemSpawnProbability = 0.2f;
@@ -92,23 +97,83 @@ public class GameplayController : MonoBehaviour
     public float deathLimit = -40f;
     public float gameSpeed = 1.0f;
 
-    public Text gameOverText;
+    //public Text gameOverText;
     public GameObject InGameUI;
+
+    public string gameMusic = "Boss Theme";
+    public string menuMusic = "Dungeon Theme";
 
     //private CharacterController characterController;
     private GameObject heroInstance;
+    /*
     private delegate void UpdateDelegate();
     private UpdateDelegate currentUpdate;
+    */
 
     private Score score;
+    private BgMusic bgm;
 
-    private static bool firstRun = true;
+    //private static bool firstRun = true;
     private Vector3 initialCharScale;
 
     private GUIStyle debugUIStyle = new GUIStyle();
 
-    private BgMusic bgm;
+    // Start is called before the first frame update
+    // for once actions
+    void Start()
+    {
+        GameObject globals = GameObject.Find("Globals");
+        Assert.IsNotNull(globals, "Globals GameObject not found!");
+        score = globals.GetComponent<Score>();
+        Assert.IsNotNull(score, "Score component not found!");
+    }
 
+    private void PauseBtnSetActive(bool active)
+    {
+        GameObject pauseBtn = InGameUI.transform.Find("PauseButton").gameObject;
+        if (pauseBtn)
+        {
+            pauseBtn.SetActive(active);
+        }
+    }
+
+    public override void Enter(AState from)
+    {
+        if(from && from.GetName() == "Pause")
+        {
+            PauseBtnSetActive(true);
+        }
+        else
+        {
+            InitBgMusic();
+            bgm.PlayAudio(gameMusic);
+
+            InstantiateHero();
+            score.Reset();
+
+            CloudManager.spawnClouds = true;
+            Debug.Log(string.Format("enter gameplay from {0}", from.GetName()));
+        }
+
+        //common actions
+        Time.timeScale = gameSpeed;
+        InGameUI.SetActive(true);
+    }
+
+    public override void Exit(AState to)
+    {
+        if (to && to.GetName() == "Pause")
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            InGameUI.SetActive(false);
+            RemoveHero();
+        }
+        //gameOverText.gameObject.SetActive(false);
+    }
+    /*
     //called before start
     void Awake()
     {
@@ -125,18 +190,26 @@ public class GameplayController : MonoBehaviour
 
         SetupGameoverState();
     }
+    */
 
     // Update is called once per frame
-    void Update()
+    //void Update()
+    void CheckDeath()
     {
-        currentUpdate();
+        //check death
+        if (heroInstance.transform.position.y < deathLimit)
+        {
+            //SceneManager.LoadScene("Main");
+            //SetupGameoverState();
+            manager.PushState("GameOver");
+        }
+    }
 
-        //exit app on back button
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
-
+    void CheckScreenshot()
+    {
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.P)){
+        if (Input.GetKeyDown(KeyCode.P))
+        {
             string folder = "Screenshots\\";
             if (!System.IO.Directory.Exists(folder))
                 System.IO.Directory.CreateDirectory(folder);
@@ -146,15 +219,32 @@ public class GameplayController : MonoBehaviour
 #endif
     }
 
+    public override void Tick()
+    {
+        //currentUpdate();
+        CheckDeath();
+
+        //exit app on back button
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //Application.Quit();
+        }
+
+
+        CheckScreenshot();
+    }
+    /*
     void GameUpdate()
     {
         //check death
         if (heroInstance.transform.position.y < deathLimit)
         {
-            SceneManager.LoadScene("Main");
+            //SceneManager.LoadScene("Main");
+            //SetupGameoverState();
         }
     }
-
+    */
+    /*
     void PauseUpdate()
     {
         bool anykey = false;
@@ -179,10 +269,11 @@ public class GameplayController : MonoBehaviour
             Time.timeScale = gameSpeed;
             score.Reset();
 
-            bgm.PlayAudio("Boss Theme");
+            bgm.PlayAudio(gameMusic);
         }
     }
-
+    */
+    /*
     void SetupGameoverState()
     {
         currentUpdate = PauseUpdate;
@@ -210,9 +301,10 @@ public class GameplayController : MonoBehaviour
         //SetCharacterVisible(false); 
         RemoveHero(); //destroy hero instance if created
 
-        bgm.PlayAudio("Dungeon Theme");
+        bgm.PlayAudio(menuMusic);
     }
-
+    */
+    /*
     private void SetCharacterVisible(bool visible)
     {
         if (visible)
@@ -224,9 +316,11 @@ public class GameplayController : MonoBehaviour
             heroInstance.transform.localScale = Vector3.zero;
         }
     }
-
+    */
     private void InstantiateHero()
     {
+        Assert.IsNotNull(heroPrefab, "Character GameObject not set!");
+
         Transform hp = transform.Find("HeroSpawn");
         heroInstance = Instantiate<GameObject>(heroPrefab, hp.position, hp.rotation);
         initialCharScale = heroInstance.transform.localScale;
@@ -302,7 +396,7 @@ public class GameplayController : MonoBehaviour
             */
         }
     }
-
+    /*
     private void PauseOverlaySetActive(bool active)
     {
         GameObject pauseOverlay = InGameUI.transform.Find("PauseOverlay").gameObject;
@@ -330,9 +424,14 @@ public class GameplayController : MonoBehaviour
             bgm.ResumeAudio();
         }
     }
-
-    public void PauseClickExit()
+*/
+    public void PauseClickStart()
     {
-        PauseClickResume();
+        manager.PushState("Pause");
+    }
+
+    public override string GetName()
+    {
+        return "Game";
     }
 }

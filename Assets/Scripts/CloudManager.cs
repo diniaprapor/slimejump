@@ -39,15 +39,16 @@ public class CloudManager : MonoBehaviour
         while (true)
         {
             //Only spawn clouds if the boolean spawnClouds is true
-            while (spawnClouds)
+            //while (spawnClouds)
+            if(spawnClouds)
             {
                 //Instantiate Cloud Prefab and then wait for specified delay, and then repeat
                 GameObject prefab = cloudPrefabs[Random.Range(0, cloudPrefabs.Length)];
                 //GameObject cloud = 
                 Instantiate(prefab);
                 //cloud.transform.parent = mainCam.transform;
-                yield return new WaitForSeconds(delay);
             }
+            yield return new WaitForSeconds(delay);
         }
     }
 }
