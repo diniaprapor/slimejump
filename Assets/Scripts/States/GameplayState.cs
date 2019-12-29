@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
 
@@ -57,6 +56,8 @@ using UnityEngine.Assertions;
  * + button click sound 
  * + In-game pause menu
  * + pause music on pause
+ * fix clouds
+ * fix gameover text
  * bg music crossfade
  * button prefab
  * countdown at game start instead of pause
@@ -121,7 +122,9 @@ public class GameplayState : AState
     // for once actions
     void Start()
     {
-        score = GetComponent<Score>();
+        GameObject globals = GameObject.Find("Globals");
+        Assert.IsNotNull(globals, "Globals GameObject not found!");
+        score = globals.GetComponent<Score>();
         Assert.IsNotNull(score, "Score component not found!");
     }
 

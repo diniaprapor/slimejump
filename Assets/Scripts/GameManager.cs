@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
         }
 
         stateStack[stateStack.Count - 1].Exit(stateStack[stateStack.Count - 2]);
-        stateStack[stateStack.Count - 2].Enter(stateStack[stateStack.Count - 2]);
+        stateStack[stateStack.Count - 2].Enter(stateStack[stateStack.Count - 1]);
         stateStack.RemoveAt(stateStack.Count - 1);
     }
 

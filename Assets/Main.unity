@@ -2243,7 +2243,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Resume
+  m_Text: Retry
 --- !u!222 &1252606250
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3465,8 +3465,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1828454644}
   - component: {fileID: 1828454643}
-  - component: {fileID: 1828454642}
-  - component: {fileID: 1828454645}
   - component: {fileID: 1828454646}
   m_Layer: 0
   m_Name: GameplayState
@@ -3475,20 +3473,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1828454642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1828454641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25c2025f4387c0478e74e6b15905c9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collectableValues: 0100000005000000
-  scoreText: {fileID: 1323948317}
 --- !u!114 &1828454643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3527,18 +3511,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1828454645
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1828454641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3303271ca2327cc4aa8dd39f1222f324, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1828454646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3644,8 +3616,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1828454643}
-        m_MethodName: PauseClickExit
+      - m_Target: {fileID: 809964644}
+        m_MethodName: ClickReturn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3705,6 +3677,64 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1859376660}
   m_CullTransparentMesh: 0
+--- !u!1 &1869209156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1869209159}
+  - component: {fileID: 1869209158}
+  - component: {fileID: 1869209157}
+  m_Layer: 0
+  m_Name: Globals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1869209157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869209156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3303271ca2327cc4aa8dd39f1222f324, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1869209158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869209156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c25c2025f4387c0478e74e6b15905c9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collectableValues: 0100000005000000
+  scoreText: {fileID: 1323948317}
+--- !u!4 &1869209159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1869209156}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 868.72595, y: 388.1615, z: -326.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1950336125
 GameObject:
   m_ObjectHideFlags: 0
@@ -3838,7 +3868,7 @@ GameObject:
   - component: {fileID: 2091718836}
   - component: {fileID: 2091718835}
   m_Layer: 5
-  m_Name: ResumeButton
+  m_Name: RetryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3907,8 +3937,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1828454643}
-        m_MethodName: PauseClickResume
+      - m_Target: {fileID: 809964644}
+        m_MethodName: ClickRetry
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
