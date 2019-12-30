@@ -55,7 +55,6 @@ public class GameOverState : AState
     public void ClickReturn()
     {
         manager.PopState();
-        // try using pop -> pop -> push to avoid reentering gameplay
         manager.SwitchState("Menu");
     }
 }
