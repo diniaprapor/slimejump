@@ -56,8 +56,10 @@ using UnityEngine.Assertions;
  * + button click sound 
  * + In-game pause menu
  * + pause music on pause
+ * refactor char to separate controls and model and make handling more convenient
+ * move music to globals
  * fix clouds
- * fix gameover text
+ * + fix gameover text
  * bg music crossfade
  * button prefab
  * countdown at game start instead of pause
@@ -150,6 +152,11 @@ public class GameplayState : AState
 
             InstantiateHero();
             score.Reset();
+
+            SetupPlatformSpawnManager();
+
+            //init camera follow
+            SetCameraFollow(heroInstance.transform);
 
             CloudManager.spawnClouds = true;
             Debug.Log(string.Format("enter gameplay from {0}", from.GetName()));
@@ -328,11 +335,7 @@ public class GameplayState : AState
         //set score adding callback
         PlatformCharacterController pcc = heroInstance.GetComponent<PlatformCharacterController>();
         pcc.addScore = score.AddScore;
-
-        SetupPlatformSpawnManager();
-
-        //init camera follow
-        SetCameraFollow(heroInstance.transform);
+        pcc.ResetSpeed();
     }
 
     private void RemoveHero()

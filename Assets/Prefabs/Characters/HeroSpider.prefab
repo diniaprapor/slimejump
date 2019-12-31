@@ -145,8 +145,9 @@ MonoBehaviour:
   maxSpeed: 10
   timeToMaxSpeed: 150
   jumpForce: 1000
-  charScale: 1.5
+  charScale: 1
   audioJump: {fileID: 8300000, guid: 21b6f4655090e1e4087c940924242078, type: 3}
   audioLand: {fileID: 8300000, guid: 603ebd56eb52ebc4fbe6527b2856ab66, type: 3}
   audioCoin: {fileID: 8300000, guid: c963e7fb5c20f9147aa3fd1f52991d4c, type: 3}
   audioGem: {fileID: 8300000, guid: c963e7fb5c20f9147aa3fd1f52991d4c, type: 3}
+  charModel: Evarcha
