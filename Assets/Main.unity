@@ -3488,7 +3488,7 @@ MonoBehaviour:
   manager: {fileID: 0}
   collectableSpawnProbability: 0.5
   gemSpawnProbability: 0.2
-  heroPrefab: {fileID: 8934275138447289952, guid: 452b785a1378ac146894ba919ad0d79f,
+  heroPrefab: {fileID: 8934275138447289952, guid: a75aa9939564b09489b1f895a511263c,
     type: 3}
   deathLimit: -40
   gameSpeed: 1

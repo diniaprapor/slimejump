@@ -19,6 +19,7 @@ public class PlatformCharacterController : MonoBehaviour {
     public AudioClip audioLand;
     public AudioClip audioCoin;
     public AudioClip audioGem;
+    public string charModel;
 
     public delegate void AddScoreDelegate(Score.CollectableType ct);
     public AddScoreDelegate addScore;
@@ -27,7 +28,8 @@ public class PlatformCharacterController : MonoBehaviour {
     //private Animator anim;
     private Rigidbody2D rb2d;
     private bool autorun = false;
-    private float currentSpeed;
+    private float currentSpeed = 0f;
+    private float runningTime; //for current speed calc
     private UnityEngine.Transform groundCheck;
     private bool facingRight = true;
     private bool jump = false;
@@ -58,7 +60,7 @@ public class PlatformCharacterController : MonoBehaviour {
         //jumpInput = false;
         //timeSinceJump = jumpForceWindow;
         autorun = false;
-        currentSpeed = initSpeed;
+        ResetSpeed();
 
         animComponent.animation.Play("Idle");
     }
@@ -77,7 +79,8 @@ public class PlatformCharacterController : MonoBehaviour {
         if (grounded) autorun = true;
 
         //gradually increase speed to some limit
-        currentSpeed = Mathf.Lerp(initSpeed, maxSpeed, Mathf.Clamp(Time.timeSinceLevelLoad / timeToMaxSpeed, 0f, 1f));
+        runningTime += Time.deltaTime;
+        currentSpeed = Mathf.Lerp(initSpeed, maxSpeed, Mathf.Clamp(runningTime / timeToMaxSpeed, 0f, 1f));
         //debugSpeed.text = currentSpeed.ToString();
         //debugSpeed.text = rb2d.velocity.x.ToString("0f");
 
@@ -154,11 +157,10 @@ public class PlatformCharacterController : MonoBehaviour {
 
     private void InitAnimations()
     {
-        string charName = "Maksim";
-        UnityFactory.factory.LoadDragonBonesData(charName + "/" + charName + "_ske");
-        UnityFactory.factory.LoadTextureAtlasData(charName + "/" + charName + "_tex");
+        UnityFactory.factory.LoadDragonBonesData(charModel + "/" + charModel + "_ske");
+        UnityFactory.factory.LoadTextureAtlasData(charModel + "/" + charModel + "_tex");
 
-        animComponent = UnityFactory.factory.BuildArmatureComponent(charName);
+        animComponent = UnityFactory.factory.BuildArmatureComponent(charModel);
 
         animComponent.transform.localPosition = transform.position;
         animComponent.transform.localScale = transform.localScale * charScale;
@@ -191,6 +193,11 @@ public class PlatformCharacterController : MonoBehaviour {
     public bool IsMovingUp()
     {
         return rb2d.velocity.y > 0.01;
+    }
+
+    public void ResetSpeed()
+    {
+        runningTime = 0f;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -231,6 +238,7 @@ public class PlatformCharacterController : MonoBehaviour {
             string animName = animComponent.animation.lastAnimationName;
             animName = !string.IsNullOrEmpty(animName) ? animName : "no animation";
             GUI.Label(new Rect(10, 40, 300, 100), "CurrentAnimation: " + animName, debugUIStyle);
+            GUI.Label(new Rect(10, 80, 300, 100), "CurrentSpeed: " + currentSpeed.ToString(), debugUIStyle);
             /*
             Animator charAnimator = characterGO.GetComponent<Animator>();
             AnimatorClipInfo[] animatorClipInfo = charAnimator.GetCurrentAnimatorClipInfo(0);
