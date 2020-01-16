@@ -13,10 +13,7 @@ public class LocalizationComponent : MonoBehaviour
         // find localization manager in globals
         // scan current for text field
         // replace by provided value
-        GameObject globals = GameObject.Find("Globals");
-        Assert.IsNotNull(globals, "Globals GameObject not found!");
-        LocalizationManager locaMgr = globals.GetComponent<LocalizationManager>();
-        Assert.IsNotNull(locaMgr, "LocalizationManager not found!");
+        LocalizationManager locaMgr = GlobalsManager.GetLocalizationManager();
         Text goText = GetComponent<Text>();
         goText.text = locaMgr.GetText(key);
     }

@@ -124,10 +124,7 @@ public class GameplayState : AState
     // for once actions
     void Start()
     {
-        GameObject globals = GameObject.Find("Globals");
-        Assert.IsNotNull(globals, "Globals GameObject not found!");
-        score = globals.GetComponent<Score>();
-        Assert.IsNotNull(score, "Score component not found!");
+        score = GlobalsManager.GetScore();
     }
 
     private void PauseBtnSetActive(bool active)
