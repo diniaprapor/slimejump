@@ -18,7 +18,22 @@
 		{
 			"key": "best_score",
 			"en": "Best Score:",
-			"ru": "Лучший результат:"
+			"ru": "Рекорд:"
+		},
+		{
+			"key": "start",
+			"en": "Start",
+			"ru": "Старт"
+		},
+		{
+			"key": "resume",
+			"en": "Resume",
+			"ru": "Продолжить"
+		},
+		{
+			"key": "quit",
+			"en": "Quit",
+			"ru": "Выйти"
 		}
 	]
 }
