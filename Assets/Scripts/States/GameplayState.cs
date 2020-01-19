@@ -56,19 +56,20 @@ using UnityEngine.Assertions;
  * + button click sound 
  * + In-game pause menu
  * + pause music on pause
+* + fix gameover text
  * refactor char to separate controls and model and make handling more convenient
  * move music to globals
  * fix clouds
- * + fix gameover text
  * bg music crossfade
  * button prefab
- * countdown at game start instead of pause
- * Separate main menu and gameplay
+ * + countdown at game start instead of pause
+ * + Separate main menu and gameplay
  * Gameover menu
  * nice bg for main menu (maybe random clouds scatter)
  * collect maxdistance, overall distance and overall score statistics
  * make possible to switch characters skins (char switch menu)
  * currency system
+ * make global static Persistence class to deal with saves
  * fix platform texture sizes/scale
  * show previous record distance
  * !make camera resolution independent
