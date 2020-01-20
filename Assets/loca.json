@@ -8,7 +8,7 @@
 		{
 			"key": "tap_to_restart",
 			"en": "Tap to restart",
-			"ru": "Нажмите чтобы продолжить"
+			"ru": "Нажмите чтобы повторить"
 		},
 		{
 			"key": "score",
@@ -34,6 +34,21 @@
 			"key": "quit",
 			"en": "Quit",
 			"ru": "Выйти"
+		},
+		{
+			"key": "restart",
+			"en": "Restart",
+			"ru": "Повторить"
+		},
+		{
+			"key": "return_to_menu",
+			"en": "Return to Menu",
+			"ru": "Вернуться в меню"
+		},
+		{
+			"key": "pause",
+			"en": "Pause",
+			"ru": "Пауза"
 		}
 	]
 }
