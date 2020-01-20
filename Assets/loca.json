@@ -1,0 +1,54 @@
+﻿{
+	"entries": [
+		{
+			"key": "game_over",
+			"en": "Game Over",
+			"ru": "Игра окончена"
+		},	
+		{
+			"key": "tap_to_restart",
+			"en": "Tap to restart",
+			"ru": "Нажмите чтобы повторить"
+		},
+		{
+			"key": "score",
+			"en": "Score:",
+			"ru": "Счет:"
+		},
+		{
+			"key": "best_score",
+			"en": "Best Score:",
+			"ru": "Рекорд:"
+		},
+		{
+			"key": "start",
+			"en": "Start",
+			"ru": "Старт"
+		},
+		{
+			"key": "resume",
+			"en": "Resume",
+			"ru": "Продолжить"
+		},
+		{
+			"key": "quit",
+			"en": "Quit",
+			"ru": "Выйти"
+		},
+		{
+			"key": "restart",
+			"en": "Restart",
+			"ru": "Повторить"
+		},
+		{
+			"key": "return_to_menu",
+			"en": "Return to Menu",
+			"ru": "Вернуться в меню"
+		},
+		{
+			"key": "pause",
+			"en": "Pause",
+			"ru": "Пауза"
+		}
+	]
+}

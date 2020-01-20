@@ -13,10 +13,7 @@ public class GameOverState : AState
     // Start is called before the first frame update
     void Start()
     {
-        GameObject globals = GameObject.Find("Globals");
-        Assert.IsNotNull(globals, "Globals GameObject not found!");
-        score = globals.GetComponent<Score>();
-        Assert.IsNotNull(score, "Score component not found!");
+        score = GlobalsManager.GetScore();
     }
 
     public override void Enter(AState from)

@@ -62,13 +62,14 @@ using UnityEngine.Assertions;
  * + fix gameover text
  * bg music crossfade
  * button prefab
- * countdown at game start instead of pause
- * Separate main menu and gameplay
+ * + countdown at game start instead of pause
+ * + Separate main menu and gameplay
  * Gameover menu
  * nice bg for main menu (maybe random clouds scatter)
  * collect maxdistance, overall distance and overall score statistics
  * make possible to switch characters skins (char switch menu)
  * currency system
+ * make global static Persistence class to deal with saves
  * fix platform texture sizes/scale
  * show previous record distance
  * !make camera resolution independent
@@ -124,10 +125,7 @@ public class GameplayState : AState
     // for once actions
     void Start()
     {
-        GameObject globals = GameObject.Find("Globals");
-        Assert.IsNotNull(globals, "Globals GameObject not found!");
-        score = globals.GetComponent<Score>();
-        Assert.IsNotNull(score, "Score component not found!");
+        score = GlobalsManager.GetScore();
     }
 
     private void PauseBtnSetActive(bool active)
