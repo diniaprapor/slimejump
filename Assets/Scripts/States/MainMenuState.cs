@@ -53,4 +53,9 @@ public class MainMenuState : AState
         manager.SwitchState("Game");
         manager.PushState("Countdown");
     }
+
+    public void SettingsClick()
+    {
+        manager.PushState("Settings");
+    }
 }

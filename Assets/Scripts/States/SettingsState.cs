@@ -34,4 +34,16 @@ public class SettingsState : AState
     {
         return "Settings";
     }
+
+    public void ClickOk()
+    {
+        // save settings changes
+        manager.PopState();
+    }
+
+    public void ClickCancel()
+    {
+        // discard settings changes
+        manager.PopState();
+    }
 }

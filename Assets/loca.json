@@ -49,6 +49,16 @@
 			"key": "pause",
 			"en": "Pause",
 			"ru": "Пауза"
+		},
+		{
+			"key": "ok",
+			"en": "Ok",
+			"ru": "Ок"
+		},
+		{
+			"key": "cancel",
+			"en": "Cancel",
+			"ru": "Отменить"
 		}
 	]
 }
